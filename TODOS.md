@@ -1,0 +1,6 @@
+- [X] Create PGSQL database;
+- [X] Add tables;
+- [X] Connect via Spring JPA;
+- [ ] Create full REST API;
+  - [X] Create user API;
+  - [ ] Create properties API;
