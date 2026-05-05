@@ -2,6 +2,8 @@ package com.thedevs.real_estate.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -10,6 +12,9 @@ public class User {
     private Long id;
     private String username;
     private String email;
+
+    @OneToMany(mappedBy = "user")
+    private List<Property> properties;
 
     protected User() {
     }

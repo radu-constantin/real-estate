@@ -4,3 +4,4 @@
 - [ ] Create full REST API;
   - [X] Create user API;
   - [ ] Create properties API;
+- [ ] Add some sort of validation; ex: max number of rooms;
