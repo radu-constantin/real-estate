@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "properties")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

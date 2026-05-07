@@ -35,4 +35,8 @@ public class PropertyService {
             return propertyRepository.save(property);
         }).orElseThrow(() -> new RuntimeException("User not found"));
     }
+
+    public void deleteProperty(Long id) {
+        propertyRepository.deleteById(id);
+    }
 }

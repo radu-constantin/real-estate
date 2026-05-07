@@ -29,7 +29,6 @@ public class PropertyController {
 
     @PostMapping
     public ResponseEntity<Property> create(@RequestBody Property property) {
-        System.out.println(property);
         Property createdProperty = propertyService.createProperty(property);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProperty);
     }
