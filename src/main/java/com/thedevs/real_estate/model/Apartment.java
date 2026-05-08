@@ -3,11 +3,15 @@ package com.thedevs.real_estate.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 @Table(name = "apartments")
 public class Apartment extends Property{
     @Column(name = "floor_num")
+    @NotNull(message = "A floor number is required!")
+    @PositiveOrZero(message = "Floor number must be a positive number or zero!")
     private Integer floorNumber;
 
     public Integer getFloorNumber() {

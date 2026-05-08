@@ -13,15 +13,19 @@ public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotNull(message = "An address is required!")
     private String address;
+
     @NotNull(message = "A date of construction is required!")
     @Column(name = "date_of_construction")
     private Date dateOfConstruction;
+
     @Column(name = "num_of_rooms")
     @NotNull(message = "Number of rooms is required!")
     @Min(value = 1, message = "Number of rooms must be at least 1!")
     private Integer numberOfRooms;
+
     @NotNull(message = "Floor area is required!")
     @Column(name = "floor_area")
     private Integer floorArea;

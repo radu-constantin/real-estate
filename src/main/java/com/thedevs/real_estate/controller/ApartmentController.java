@@ -4,6 +4,7 @@ import com.thedevs.real_estate.model.Apartment;
 import com.thedevs.real_estate.model.House;
 import com.thedevs.real_estate.service.ApartmentService;
 import com.thedevs.real_estate.service.HouseService;
+import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,13 +34,13 @@ public class ApartmentController {
     }
 
     @PostMapping
-    ResponseEntity<Apartment> create(@RequestBody Apartment apartment) {
+    ResponseEntity<Apartment> create(@Valid @RequestBody Apartment apartment) {
         Apartment createdApartment = apartmentService.createApartment(apartment);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdApartment);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Apartment> update(@PathVariable Long id, @RequestBody Apartment apartment) {
+    public ResponseEntity<Apartment> update(@Valid @PathVariable Long id, @RequestBody Apartment apartment) {
         Apartment updatedApartment = apartmentService.updateApartment(id, apartment);
         return ResponseEntity.ok(updatedApartment);
     }

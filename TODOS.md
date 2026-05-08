@@ -3,5 +3,7 @@
 - [X] Connect via Spring JPA;
 - [ ] Create full REST API;
   - [X] Create user API;
-  - [ ] Create properties API;
-- [ ] Add some sort of validation; ex: max number of rooms;
+  - [X] Create properties API;
+- [X] Add some sort of validation; ex: max number of rooms;
+- [ ] Finish adding validation for all resources;
+- [ ] Implement tests for validation rules;

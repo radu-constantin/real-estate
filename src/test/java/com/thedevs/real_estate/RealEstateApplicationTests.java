@@ -13,6 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -37,6 +41,8 @@ class ApartmentControllerTest {
 
         Apartment apartment = new Apartment();
         apartment.setAddress("123 Main St");
+        apartment.setDateOfConstruction(new Date(2024, Calendar.MARCH, 15));
+        apartment.setFloorArea(100);
         apartment.setFloorNumber(3);
         apartment.setNumberOfRooms(2);
 
@@ -54,6 +60,8 @@ class ApartmentControllerTest {
     void shouldCreateApartment() throws Exception {
         Apartment apartment = new Apartment();
         apartment.setAddress("123 Main St");
+        apartment.setDateOfConstruction(new Date(2020, Calendar.MARCH, 10));
+        apartment.setFloorArea(50);
         apartment.setFloorNumber(3);
         apartment.setNumberOfRooms(2);
 
@@ -75,6 +83,8 @@ class ApartmentControllerTest {
     void shouldUpdateApartment() throws Exception {
         Apartment updated = new Apartment();
         updated.setAddress("456 New St");
+        updated.setDateOfConstruction(new Date(2020, Calendar.MARCH, 10));
+        updated.setFloorArea(50);
         updated.setFloorNumber(5);
         updated.setNumberOfRooms(5);
 
@@ -113,6 +123,8 @@ class HouseControllerTest {
 
         House house = new House();
         house.setAddress("789 Maple Ave");
+        house.setDateOfConstruction(new Date(2022, Calendar.JANUARY, 1));
+        house.setFloorArea(150);
         house.setNumberOfFloors(2);
         house.setNumberOfRooms(4);
 
@@ -130,6 +142,8 @@ class HouseControllerTest {
     void shouldCreateHouse() throws Exception {
         House house = new House();
         house.setAddress("321 Oak St");
+        house.setDateOfConstruction(new Date(2020, Calendar.JANUARY, 1));
+        house.setFloorArea(100);
         house.setNumberOfFloors(3);
         house.setNumberOfRooms(3);
 
@@ -151,6 +165,8 @@ class HouseControllerTest {
     void shouldUpdateHouse() throws Exception {
         House updated = new House();
         updated.setAddress("555 Revised Lane");
+        updated.setDateOfConstruction(new Date(2021, Calendar.JUNE, 21));
+        updated.setFloorArea(90);
         updated.setNumberOfFloors(5);
         updated.setNumberOfRooms(6);
 
