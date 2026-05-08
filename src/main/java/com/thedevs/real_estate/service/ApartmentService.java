@@ -1,12 +1,11 @@
 package com.thedevs.real_estate.service;
 
 import com.thedevs.real_estate.model.Apartment;
-import com.thedevs.real_estate.model.House;
 import com.thedevs.real_estate.repository.ApartmentRepository;
-import com.thedevs.real_estate.repository.HouseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ApartmentService {
@@ -21,8 +20,8 @@ public class ApartmentService {
         return (List<Apartment>) apartmentRepository.findAll();
     }
 
-    public Apartment getApartmentById(Long id) {
-        return apartmentRepository.findById(id).orElse(null);
+    public Optional<Apartment> getApartmentById(Long id) {
+        return apartmentRepository.findById(id);
     }
 
     public Apartment createApartment(Apartment apartment) {
@@ -40,7 +39,8 @@ public class ApartmentService {
         }).orElseThrow(() -> new RuntimeException("Apartment not found"));
     }
 
-    public void deleteHouse(Long id) {
+    public Apartment deleteApartment(Long id) {
         apartmentRepository.deleteById(id);
+        return null;
     }
 }

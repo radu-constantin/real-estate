@@ -1,6 +1,8 @@
 package com.thedevs.real_estate.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
@@ -10,7 +12,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message="A username is required!")
     private String username;
+    @Email(message="A valid email is required!")
     private String email;
 
     @OneToMany(mappedBy = "user")

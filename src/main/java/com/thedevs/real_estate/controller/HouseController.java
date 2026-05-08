@@ -17,26 +17,35 @@ public class HouseController {
         this.houseService = houseService;
     }
 
-    @GetMapping()
-    List<House> getAll() {
+    @GetMapping
+    public List<House> getAll() {
         return houseService.getAllHouses();
     }
 
     @GetMapping("/{id}")
-    House getById(@PathVariable Long id) {
-        return houseService.getHouseById(id);
+    public ResponseEntity<House> getById(@PathVariable Long id) {
+        House house = houseService.getHouseById(id);
+        if (house == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(house);
     }
 
     @PostMapping
-    ResponseEntity<House> create(@RequestBody House house) {
+    public ResponseEntity<House> create(@RequestBody House house) {
         House createdHouse = houseService.createHouse(house);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdHouse);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<House> update(@PathVariable Long id, @RequestBody House house) {
+    public ResponseEntity<House> update(@PathVariable Long id, @RequestBody House house) {
         House updatedHouse = houseService.updateHouse(id, house);
         return ResponseEntity.ok(updatedHouse);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        houseService.deleteHouse(id);
+        return ResponseEntity.noContent().build();
+    }
 }
