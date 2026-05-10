@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "listings")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Listing {
 
     @Id
