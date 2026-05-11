@@ -1,14 +1,10 @@
 package com.thedevs.real_estate.service;
 
-import com.thedevs.real_estate.dto.CreateRentalRequest;
 import com.thedevs.real_estate.dto.CreateSaleRequest;
-import com.thedevs.real_estate.dto.UpdateRentalRequest;
 import com.thedevs.real_estate.dto.UpdateSaleRequest;
-import com.thedevs.real_estate.model.Rental;
 import com.thedevs.real_estate.model.Sale;
 import com.thedevs.real_estate.model.enums.ListingStatus;
 import com.thedevs.real_estate.repository.PropertyRepository;
-import com.thedevs.real_estate.repository.RentalRepository;
 import com.thedevs.real_estate.repository.SaleRepository;
 import org.springframework.stereotype.Service;
 

@@ -7,3 +7,4 @@
 - [X] Add some sort of validation; ex: max number of rooms;
 - [ ] Finish adding validation for all resources;
 - [ ] Implement tests for validation rules;
+- [ ] properly setup axios in main.js

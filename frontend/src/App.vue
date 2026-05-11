@@ -1,11 +1,18 @@
-<script setup></script>
+<script setup>
+import axios from "axios";
+
+const properties = await axios.get('/api/properties')
+
+console.log(properties)
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <h1>Hello World!</h1>
+  <li>
+    <ul v-for="property in properties">
+      {{property}}
+    </ul>
+  </li>
 </template>
 
 <style scoped></style>
