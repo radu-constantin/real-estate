@@ -1,5 +1,7 @@
 package com.thedevs.real_estate.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +11,15 @@ import java.util.Date;
 @Entity
 @Table(name = "properties")
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "propertyType"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = House.class, name = "house"),
+        @JsonSubTypes.Type(value = Apartment.class, name = "apartment")
+})
 public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

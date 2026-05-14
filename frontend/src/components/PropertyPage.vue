@@ -1,0 +1,66 @@
+<script setup>
+import {ref, computed, onMounted} from 'vue';
+import PropertyFilters from './PropertyFilters.vue';
+import PropertyList from './PropertyList.vue';
+import axios from "axios";
+
+const properties = ref([])
+
+onMounted(async () => {
+  const response = await axios.get('/api/properties')
+  properties.value = response.data
+})
+
+// const allProperties = ref([
+//   { id: 1, title: 'Modern Villa', price: 850000, location: 'Los Angeles, CA', beds: 3, baths: 2, imageUrl: '/path/to/img.jpg' },
+//   { id: 2, title: 'Cozy Cottage', price: 450000, location: 'Austin, TX', beds: 2, baths: 1, imageUrl: '/path/to/img.jpg' },
+// ]);
+
+const activeFilters = ref({
+  search: '',
+  price: 2000000,
+  beds: 0
+});
+
+const handleFilterChange = (newFilters) => {
+  activeFilters.value = newFilters;
+};
+
+const filteredProperties = computed(() => {
+  return properties.value;
+  // return properties.value.filter(p => {
+  //   const matchesSearch = p.location.toLowerCase().includes(activeFilters.value.search.toLowerCase()) ||
+  //     p.title.toLowerCase().includes(activeFilters.value.search.toLowerCase());
+  //   const matchesPrice = p.price <= activeFilters.value.price;
+  //   const matchesBeds = p.beds >= activeFilters.value.beds;
+  //
+  //   return matchesSearch && matchesPrice && matchesBeds;
+  // });
+});
+</script>
+
+<template>
+    <div class="page-header">
+      <h2>Available Properties</h2>
+      <p>{{ filteredProperties.length }} results found</p>
+    </div>
+
+    <PropertyFilters @filter-change="handleFilterChange" />
+
+    <PropertyList :properties="filteredProperties" />
+
+    <div v-if="filteredProperties.length === 0" class="empty-state">
+      <p>No properties match your criteria. Try adjusting your filters!</p>
+    </div>
+</template>
+
+<style scoped>
+.page-header {
+  margin-bottom: 1.5rem;
+}
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: var(--color-text-muted);
+}
+</style>

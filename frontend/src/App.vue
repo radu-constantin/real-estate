@@ -1,18 +1,13 @@
 <script setup>
-import axios from "axios";
+import Layout from "@/components/Layout.vue";
+import PropertyPage from "@/components/PropertyPage.vue";
 
-const properties = await axios.get('/api/properties')
-
-console.log(properties)
 </script>
 
 <template>
-  <h1>Hello World!</h1>
-  <li>
-    <ul v-for="property in properties">
-      {{property}}
-    </ul>
-  </li>
+  <Layout>
+    <PropertyPage />
+  </Layout>
 </template>
 
 <style scoped></style>

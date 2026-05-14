@@ -1,5 +1,7 @@
 package com.thedevs.real_estate.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.thedevs.real_estate.model.enums.ListingStatus;
 import jakarta.persistence.*;
 
@@ -8,6 +10,15 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "listings")
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "listingType"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Sale.class, name = "sale"),
+        @JsonSubTypes.Type(value = Rental.class, name = "rental")
+})
 public class Listing {
 
     @Id
