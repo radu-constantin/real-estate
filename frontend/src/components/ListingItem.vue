@@ -2,38 +2,46 @@
 import { computed } from 'vue';
 
 const props = defineProps({
-  property: {
+  listing: {
     type: Object,
     required: true
   }
 });
 
+const property = props.listing.property;
+console.log(property.propertyType)
+
+
 const formattedPrice = computed(() => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'EUR',
     maximumFractionDigits: 0,
-  }).format(props.property.price);
+  }).format(props.listing?.askingPrice || props.listing?.monthlyRent);
 });
 </script>
 
 <template>
-  <article class="property-row">
+  <article class="listing-row">
     <div class="image-section">
-      <img src="../assets/images/random_house.jpg" alt="House photo" class="property-image" />
+      <img src="../assets/images/random_house.jpg" alt="House photo" class="listing-image" />
     </div>
 
     <div class="info-section">
       <div class="header-info">
         <h3 class="price">{{ formattedPrice }}</h3>
-        <h4 class="title">{{ property.title }}</h4>
-        <p class="location">{{ property.location }}</p>
+        <h4 class="title">{{ property.address }}</h4>
       </div>
 
       <div class="specs-row">
-        <div class="spec-item"><strong>{{ property.beds }}</strong> beds</div>
-        <div class="spec-item"><strong>{{ property.baths }}</strong> baths</div>
-        <div class="spec-item"><strong>2,100</strong> sqft</div> <!-- Added a dummy sqft to fill space -->
+        <div class="spec-item"><strong>{{ property.numberOfRooms }}</strong> camere</div>
+        <div class="spec-item"><strong>{{ property.floorArea }}</strong> m<sup>2</sup> </div>
+
+        <div class="spec-item" v-if="property.propertyType === 'house'"><strong>{{ property.numberOfFloors }}</strong> etaje </div>
+        <div class="spec-item" v-if="property.propertyType === 'house'"><strong>{{ property.plotArea }}</strong> m<sup>2</sup> teren </div>
+
+        <div class="spec-item" v-if="property.propertyType === 'apartment'"><strong>etajul {{ property.floorNum }}</strong></div>
+
       </div>
     </div>
 
@@ -44,7 +52,7 @@ const formattedPrice = computed(() => {
 </template>
 
 <style scoped>
-.property-row {
+.listing-row {
   display: flex;
   align-items: stretch;
   border: 1px solid var(--color-border);
@@ -55,7 +63,7 @@ const formattedPrice = computed(() => {
   transition: background-color 0.2s;
 }
 
-.property-row:hover {
+.listing-row:hover {
   background-color: #fcfcfc;
 }
 
@@ -124,7 +132,7 @@ const formattedPrice = computed(() => {
 }
 
 @media (max-width: 768px) {
-  .property-row {
+  .listing-row {
     flex-direction: column;
   }
   .image-section {

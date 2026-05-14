@@ -1,13 +1,13 @@
 <script setup>
 import {ref, computed, onMounted} from 'vue';
-import PropertyFilters from './PropertyFilters.vue';
-import PropertyList from './PropertyList.vue';
+import ListingFilters from './ListingFilters.vue';
+import ListingList from './ListingList.vue';
 import axios from "axios";
 
 const properties = ref([])
 
 onMounted(async () => {
-  const response = await axios.get('/api/properties')
+  const response = await axios.get('/api/listings')
   properties.value = response.data
 })
 
@@ -26,7 +26,7 @@ const handleFilterChange = (newFilters) => {
   activeFilters.value = newFilters;
 };
 
-const filteredProperties = computed(() => {
+const filteredListings = computed(() => {
   return properties.value;
   // return properties.value.filter(p => {
   //   const matchesSearch = p.location.toLowerCase().includes(activeFilters.value.search.toLowerCase()) ||
@@ -42,14 +42,14 @@ const filteredProperties = computed(() => {
 <template>
     <div class="page-header">
       <h2>Available Properties</h2>
-      <p>{{ filteredProperties.length }} results found</p>
+      <p>{{ filteredListings.length }} results found</p>
     </div>
 
-    <PropertyFilters @filter-change="handleFilterChange" />
+    <ListingFilters @filter-change="handleFilterChange" />
 
-    <PropertyList :properties="filteredProperties" />
+    <ListingList :listings="filteredListings" />
 
-    <div v-if="filteredProperties.length === 0" class="empty-state">
+    <div v-if="filteredListings.length === 0" class="empty-state">
       <p>No properties match your criteria. Try adjusting your filters!</p>
     </div>
 </template>

@@ -1,12 +1,12 @@
 <script setup>
 import Layout from "@/components/Layout.vue";
-import PropertyPage from "@/components/PropertyPage.vue";
+import ListingPage from "@/components/ListingPage.vue";
 
 </script>
 
 <template>
   <Layout>
-    <PropertyPage />
+    <ListingPage />
   </Layout>
 </template>
 

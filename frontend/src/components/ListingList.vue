@@ -1,8 +1,8 @@
 <script setup>
-import PropertyListItem from './PropertyListItem.vue';
+import ListingItem from './ListingItem.vue';
 
 const props = defineProps({
-  properties: {
+  listings: {
     type: Array,
     required: true
   }
@@ -11,16 +11,16 @@ const props = defineProps({
 
 <template>
   <section class="property-list-container">
-    <div v-if="properties.length > 0" class="list-stack">
-      <PropertyListItem
-        v-for="item in properties"
+    <div v-if="listings.length > 0" class="list-stack">
+      <ListingItem
+        v-for="item in listings"
         :key="item.id"
-        :property="item"
+        :listing="item"
       />
     </div>
 
     <div v-else class="no-results">
-      <p>No properties found matching your criteria.</p>
+      <p>No listings found matching your criteria.</p>
     </div>
   </section>
 </template>
