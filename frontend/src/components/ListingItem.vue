@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
   listing: {
@@ -7,6 +8,9 @@ const props = defineProps({
     required: true
   }
 });
+
+const router = useRouter();
+const goToDetail = () => router.push(`/listings/${props.listing.id}`);
 
 const property = props.listing.property;
 console.log(property.propertyType)
@@ -46,7 +50,7 @@ const formattedPrice = computed(() => {
     </div>
 
     <div class="action-section">
-      <button class="view-btn">View Details</button>
+      <button class="view-btn" @click="goToDetail">Vezi detalii</button>
     </div>
   </article>
 </template>

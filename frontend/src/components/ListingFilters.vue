@@ -19,7 +19,7 @@ watch([searchQuery, maxPrice, minBeds], () => {
 <template>
   <div class="filters-container">
     <div class="filter-group">
-      <label for="search">Search Location</label>
+      <label for="search">Locație</label>
       <input
         id="search"
         v-model="searchQuery"
@@ -29,7 +29,7 @@ watch([searchQuery, maxPrice, minBeds], () => {
     </div>
 
     <div class="filter-group">
-      <label for="price">Max Price: ${{ maxPrice.toLocaleString() }}</label>
+      <label for="price">Preț maxim: ${{ maxPrice.toLocaleString() }}</label>
       <input
         id="price"
         v-model.number="maxPrice"
@@ -41,7 +41,7 @@ watch([searchQuery, maxPrice, minBeds], () => {
     </div>
 
     <div class="filter-group">
-      <label for="beds">Min Bedrooms</label>
+      <label for="beds">Număr camere</label>
       <select id="beds" v-model.number="minBeds">
         <option :value="0">Any</option>
         <option v-for="n in 5" :key="n" :value="n">{{ n }}+ Beds</option>

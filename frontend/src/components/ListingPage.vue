@@ -41,8 +41,8 @@ const filteredListings = computed(() => {
 
 <template>
     <div class="page-header">
-      <h2>Available Properties</h2>
-      <p>{{ filteredListings.length }} results found</p>
+      <h2>Proprietăți disponibile</h2>
+      <p>{{ filteredListings.length }} rezultate găsite</p>
     </div>
 
     <ListingFilters @filter-change="handleFilterChange" />
@@ -50,7 +50,7 @@ const filteredListings = computed(() => {
     <ListingList :listings="filteredListings" />
 
     <div v-if="filteredListings.length === 0" class="empty-state">
-      <p>No properties match your criteria. Try adjusting your filters!</p>
+      <p>Nu sunt proprietăți conform criteriilor de căutare. Ajustează filtrele!</p>
     </div>
 </template>
 
