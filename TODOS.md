@@ -7,4 +7,26 @@
 - [X] Add some sort of validation; ex: max number of rooms;
 - [ ] Finish adding validation for all resources;
 - [ ] Implement tests for validation rules;
-- [ ] properly setup axios in main.js
+- [ ] Properly setup axios in main.js
+
+- [ ] Finish individual listing page;
+- [ ] Allow user to create new listing;
+  - [ ] Add validation for new listing;
+- [ ] Allow user to edit listing;
+  - [ ] Add validation for edit listing;
+- [ ] Allow user to delete listing;
+  - [ ] Add validation for delete listing;
+- [ ] Implement messaging system;
+- [ ] Implement user profile;
+- [ ] Implement user favorites;
+- [ ] Implement error pages;
+- [ ] Implement logs;
+
+- [ ] Authentication with JDBC;
+  - [ ] Encode password (BCrypt)
+  - [ ] Remember me functionality;
+  - [ ] CSRF protection;
+- [ ] Add USER and ADMIN roles;
+- [ ] Protect endpoints based on role;
+- [ ] Implement login/register page;
+- [ ] Functional logout;
