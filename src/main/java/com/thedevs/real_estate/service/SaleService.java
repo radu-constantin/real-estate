@@ -36,6 +36,7 @@ public class SaleService {
             Sale sale = new Sale();
             sale.setProperty(property);
             sale.setAskingPrice(request.getAskingPrice());
+            sale.setDescription(request.getDescription());
             sale.setListedAt(LocalDate.now());
             sale.setStatus(ListingStatus.active);
             return saleRepository.save(sale);

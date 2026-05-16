@@ -48,7 +48,7 @@ const constructionYear = computed(() => {
       <template v-if="property.propertyType === 'apartment'">
         <div class="spec-item">
           <span class="spec-label">Etaj</span>
-          <span class="spec-value">{{ property.floorNum }}</span>
+          <span class="spec-value">{{ property.floorNumber }}</span>
         </div>
       </template>
     </div>

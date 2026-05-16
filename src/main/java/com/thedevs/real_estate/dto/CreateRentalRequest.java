@@ -7,6 +7,7 @@ public class CreateRentalRequest {
     private Long propertyId;
     private BigDecimal monthlyRent;
     private LocalDate availableFrom;
+    private String description;
 
     public CreateRentalRequest() {}
 
@@ -18,4 +19,7 @@ public class CreateRentalRequest {
 
     public LocalDate getAvailableFrom() { return availableFrom; }
     public void setAvailableFrom(LocalDate availableFrom) { this.availableFrom = availableFrom; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 }

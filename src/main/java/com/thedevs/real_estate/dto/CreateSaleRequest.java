@@ -6,6 +6,7 @@ import java.time.LocalDate;
 public class CreateSaleRequest {
     private Long propertyId;
     private BigDecimal askingPrice;
+    private String description;
 
     public CreateSaleRequest() {}
 
@@ -14,4 +15,7 @@ public class CreateSaleRequest {
 
     public BigDecimal getAskingPrice() { return askingPrice; }
     public void setAskingPrice(BigDecimal askingPrice) { this.askingPrice = askingPrice; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 }

@@ -1,5 +1,6 @@
 package com.thedevs.real_estate.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
@@ -30,6 +31,7 @@ public class Property {
 
     @NotNull(message = "A date of construction is required!")
     @Column(name = "date_of_construction")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dateOfConstruction;
 
     @Column(name = "num_of_rooms")

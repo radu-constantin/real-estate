@@ -1,10 +1,22 @@
+<script setup>
+import {RouterLink} from "vue-router";
+import Button from './small_components/Button.vue';
+</script>
+
 <template>
   <div class="layout-container">
     <header class="navbar">
       <nav>
-        <h1>IMOBILIARE</h1>
+        <RouterLink to="/">
+          <h1>IMOBILIARE</h1>
+        </RouterLink>
         <ul>
-          <li>Acasă</li>
+          <li>
+            <RouterLink to="/listings/create">
+              <Button label="Adaugă anunț">
+              </Button>
+            </RouterLink>
+          </li>
           <li>Anunțuri</li>
           <li>Profilul meu</li>
         </ul>
@@ -46,6 +58,12 @@ nav ul {
   list-style: none;
   display: flex;
   gap: 1rem;
+}
+
+ul li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .content {

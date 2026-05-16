@@ -33,3 +33,5 @@
 - [ ] Protect endpoints based on role;
 - [ ] Implement login/register page;
 - [ ] Functional logout;
+
+- [ ] Im forms replace the placeholder user id with the actual user id; !!!!

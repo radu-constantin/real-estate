@@ -37,6 +37,7 @@ public class RentalService {
             rental.setProperty(property);
             rental.setMonthlyRent(request.getMonthlyRent());
             rental.setAvailableFrom(request.getAvailableFrom());
+            rental.setDescription(request.getDescription());
             rental.setListedAt(LocalDate.now());
             rental.setStatus(ListingStatus.active);
             return rentalRepository.save(rental);

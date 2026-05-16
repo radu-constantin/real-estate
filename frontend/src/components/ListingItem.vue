@@ -44,7 +44,7 @@ const formattedPrice = computed(() => {
         <div class="spec-item" v-if="property.propertyType === 'house'"><strong>{{ property.numberOfFloors }}</strong> etaje </div>
         <div class="spec-item" v-if="property.propertyType === 'house'"><strong>{{ property.plotArea }}</strong> m<sup>2</sup> teren </div>
 
-        <div class="spec-item" v-if="property.propertyType === 'apartment'"><strong>etajul {{ property.floorNum }}</strong></div>
+        <div class="spec-item" v-if="property.propertyType === 'apartment'"><strong>etajul {{ property.floorNumber }}</strong></div>
 
       </div>
     </div>
