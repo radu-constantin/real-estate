@@ -3,7 +3,7 @@
 - [X] Connect via Spring JPA;
 - [ ] Create full REST API;
   - [X] Create user API;
-  - [X] Create properties API;
+    - [X] Create properties API;
 - [X] Add some sort of validation; ex: max number of rooms;
 - [ ] Finish adding validation for all resources;
 - [ ] Implement tests for validation rules;
@@ -21,6 +21,9 @@
 - [ ] Implement user favorites;
 - [ ] Implement error pages;
 - [ ] Implement logs;
+- [ ] Implement filters;
+- [ ] Implement search; ??
+- [ ] Implement pagination; ??
 
 - [ ] Authentication with JDBC;
   - [ ] Encode password (BCrypt)

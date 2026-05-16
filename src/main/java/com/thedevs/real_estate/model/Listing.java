@@ -10,15 +10,8 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "listings")
 @Inheritance(strategy = InheritanceType.JOINED)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "listingType"
-)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = Sale.class, name = "sale"),
-        @JsonSubTypes.Type(value = Rental.class, name = "rental")
-})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "listingType")
+@JsonSubTypes({@JsonSubTypes.Type(value = Sale.class, name = "sale"), @JsonSubTypes.Type(value = Rental.class, name = "rental")})
 public class Listing {
 
     @Id
@@ -28,6 +21,9 @@ public class Listing {
     @ManyToOne
     @JoinColumn(name = "property_id", nullable = false)
     private Property property;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "listed_at")
     private LocalDate listedAt;
@@ -52,6 +48,14 @@ public class Listing {
 
     public void setProperty(Property property) {
         this.property = property;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDate getListedAt() {

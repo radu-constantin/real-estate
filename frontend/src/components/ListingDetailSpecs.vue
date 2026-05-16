@@ -1,8 +1,8 @@
 <script setup>
-import { computed } from 'vue';
+import {computed} from 'vue';
 
 const props = defineProps({
-  listing: { type: Object, required: true }
+  listing: {type: Object, required: true}
 });
 
 const property = computed(() => props.listing.property);
@@ -27,7 +27,9 @@ const constructionYear = computed(() => {
       </div>
       <div class="spec-item">
         <span class="spec-label">Tip proprietate</span>
-        <span class="spec-value">{{ property.propertyType === 'house' ? 'Casă' : 'Apartament' }}</span>
+        <span class="spec-value">{{
+            property.propertyType === 'house' ? 'Casă' : 'Apartament'
+          }}</span>
       </div>
       <div class="spec-item">
         <span class="spec-label">Construit în</span>
@@ -49,6 +51,12 @@ const constructionYear = computed(() => {
           <span class="spec-value">{{ property.floorNum }}</span>
         </div>
       </template>
+    </div>
+    <div class="specs-grid">
+      <div class="spec-item" style="grid-column: span 2;">
+        <span class="spec-label">Descriere</span>
+        <span class="spec-value">{{ listing.description }}</span>
+      </div>
     </div>
   </div>
 </template>
