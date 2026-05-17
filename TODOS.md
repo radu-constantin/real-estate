@@ -35,3 +35,5 @@
 - [ ] Functional logout;
 
 - [ ] Im forms replace the placeholder user id with the actual user id; !!!!
+- [ ] Right now 2 requests are made for creating a listing (1 for property and 1 for listing);
+- [ ] Split address property into country, city and address;
