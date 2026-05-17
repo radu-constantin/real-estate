@@ -4,7 +4,6 @@ import com.thedevs.real_estate.model.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,14 +30,20 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Property> properties;
 
-    protected User() {
+    protected User() {}
+
+    protected User(String username, String email, String password, Role role) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
     public User(String username, String password, Role role, String email) {
         this.username = username;
+        this.email = email;
         this.password = password;
         this.role = role;
-        this.email = email;
     }
 
     public Long getId() {
@@ -51,8 +56,8 @@ public class User implements UserDetails {
     }
 
     @Override
-    public @Nullable String getPassword() {
-        return "";
+    public String getPassword() {
+        return this.password;
     }
 
     public String getUsername() {
