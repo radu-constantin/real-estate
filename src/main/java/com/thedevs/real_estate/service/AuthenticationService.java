@@ -35,10 +35,10 @@ public class AuthenticationService {
                 Role.USER,
                 request.getEmail()
         );
-        repository.save(user);
+        User savedUser = repository.save(user);
 
         String jwtToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(jwtToken);
+        return new AuthenticationResponse(jwtToken, savedUser.getId(), savedUser.getUsername(), savedUser.getEmail(), savedUser.getRole());
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -53,6 +53,6 @@ public class AuthenticationService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
 
         String jwtToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(jwtToken);
+        return new AuthenticationResponse(jwtToken, user.getId(), user.getUsername(), user.getEmail(), user.getRole());
     }
 }
