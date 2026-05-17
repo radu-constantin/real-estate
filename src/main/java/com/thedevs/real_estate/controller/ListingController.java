@@ -19,8 +19,10 @@ public class ListingController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Listing>> getAll() {
-        return ResponseEntity.ok(listingService.getAllListings());
+    public ResponseEntity<List<Listing>> getAll(@RequestParam(required = false) Long userId,
+                                                @RequestParam(required = false) String address) {
+
+        return ResponseEntity.ok(listingService.getAllListings(userId, address));
     }
 
     @GetMapping("/{id}")

@@ -25,14 +25,14 @@
 - [ ] Implement search; ??
 - [ ] Implement pagination; ??
 
-- [ ] Authentication with JDBC;
-  - [ ] Encode password (BCrypt)
+- [X] Authentication with JDBC;
+  - [X] Encode password (BCrypt)
   - [ ] Remember me functionality;
   - [ ] CSRF protection;
-- [ ] Add USER and ADMIN roles;
+- [X] Add USER and ADMIN roles;
 - [ ] Protect endpoints based on role;
-- [ ] Implement login/register page;
-- [ ] Functional logout;
+- [X] Implement login/register page;
+- [X] Functional logout;
 
 - [ ] Im forms replace the placeholder user id with the actual user id; !!!!
 - [ ] Right now 2 requests are made for creating a listing (1 for property and 1 for listing);

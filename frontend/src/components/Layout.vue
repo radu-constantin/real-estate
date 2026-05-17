@@ -30,7 +30,7 @@ const logout = () => {
           <li>Profilul meu</li>
           <li>
             <RouterLink to="/auth">
-              <Button label="Logout" ghost="true">
+              <Button label="Logout" style="background-color: white;">
               </Button>
             </RouterLink>
           </li>
