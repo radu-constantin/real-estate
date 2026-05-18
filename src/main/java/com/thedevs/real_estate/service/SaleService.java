@@ -46,6 +46,7 @@ public class SaleService {
    public Sale updateSale(Long id, UpdateSaleRequest request) {
        return saleRepository.findById(id).map(sale -> {
            sale.setAskingPrice(request.getAskingPrice());
+           sale.setDescription(request.getDescription());
            sale.setStatus(request.getStatus());
            sale.setUpdatedAt(LocalDate.now());
            return saleRepository.save(sale);

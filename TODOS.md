@@ -10,7 +10,7 @@
 - [ ] Properly setup axios in main.js
 
 - [ ] Finish individual listing page;
-- [ ] Allow user to create new listing;
+- [X] Allow user to create new listing;
   - [ ] Add validation for new listing;
 - [ ] Allow user to edit listing;
   - [ ] Add validation for edit listing;

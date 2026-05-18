@@ -9,6 +9,10 @@ import './style.css'
 import './assets/variables.css'
 
 axios.defaults.baseURL = "http://localhost:8080"
+const storedToken = localStorage.getItem('token')
+if (storedToken) {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`
+}
 
 const app = createApp(App)
 

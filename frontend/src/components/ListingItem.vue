@@ -6,6 +6,10 @@ const props = defineProps({
   listing: {
     type: Object,
     required: true
+  },
+  showEdit: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -51,6 +55,7 @@ const formattedPrice = computed(() => {
 
     <div class="action-section">
       <button class="view-btn" @click="goToDetail">Vezi detalii</button>
+      <button v-if="showEdit" class="edit-btn" @click="router.push(`/listings/${listing.id}/edit`)">Editează</button>
     </div>
   </article>
 </template>
@@ -121,8 +126,11 @@ const formattedPrice = computed(() => {
 .action-section {
   padding: 1.25rem;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
   border-left: 1px solid var(--color-border);
+  min-width: 120px;
 }
 
 .view-btn {
@@ -133,6 +141,23 @@ const formattedPrice = computed(() => {
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
+}
+
+.edit-btn {
+  margin-top: 0.5rem;
+  background-color: white;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.15s, color 0.15s;
+}
+
+.edit-btn:hover {
+  background-color: var(--color-primary);
+  color: white;
 }
 
 @media (max-width: 768px) {

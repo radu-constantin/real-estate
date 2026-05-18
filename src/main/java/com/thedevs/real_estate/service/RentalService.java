@@ -48,6 +48,7 @@ public class RentalService {
         return rentalRepository.findById(id).map(rental -> {
             rental.setMonthlyRent(request.getMonthlyRent());
             rental.setAvailableFrom(request.getAvailableFrom());
+            rental.setDescription(request.getDescription());
             rental.setStatus(request.getStatus());
             rental.setUpdatedAt(LocalDate.now());
             return rentalRepository.save(rental);

@@ -34,7 +34,6 @@ export const useAuthStore = defineStore('auth', {
         localStorage.setItem('token', this.token)
         localStorage.setItem('user', JSON.stringify(this.user))
 
-        axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
       } catch (err) {
         this.error = err.response?.data?.message || 'Registration failed'
         throw err
@@ -57,7 +56,6 @@ export const useAuthStore = defineStore('auth', {
         localStorage.setItem('token', this.token)
         localStorage.setItem('user', JSON.stringify(this.user))
 
-        axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
       } catch (err) {
         this.error = err.response?.data?.message || 'Invalid username or password'
         throw err
@@ -71,7 +69,6 @@ export const useAuthStore = defineStore('auth', {
       this.user = null
       localStorage.removeItem('token')
       localStorage.removeItem('user')
-      delete axios.defaults.headers.common['Authorization']
     }
   }
 })

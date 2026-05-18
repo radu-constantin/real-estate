@@ -8,6 +8,7 @@ import java.time.LocalDate;
 public class UpdateRentalRequest {
     private BigDecimal monthlyRent;
     private LocalDate availableFrom;
+    private String description;
     private ListingStatus status;
 
     public UpdateRentalRequest() {}
@@ -17,6 +18,9 @@ public class UpdateRentalRequest {
 
     public LocalDate getAvailableFrom() { return availableFrom; }
     public void setAvailableFrom(LocalDate availableFrom) { this.availableFrom = availableFrom; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
     public ListingStatus getStatus() { return status; }
     public void setStatus(ListingStatus status) { this.status = status; }

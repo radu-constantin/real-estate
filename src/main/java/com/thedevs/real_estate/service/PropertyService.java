@@ -1,5 +1,7 @@
 package com.thedevs.real_estate.service;
 
+import com.thedevs.real_estate.model.Apartment;
+import com.thedevs.real_estate.model.House;
 import com.thedevs.real_estate.model.Property;
 import com.thedevs.real_estate.repository.PropertyRepository;
 import org.springframework.stereotype.Service;
@@ -32,8 +34,14 @@ public class PropertyService {
             property.setDateOfConstruction(updated.getDateOfConstruction());
             property.setNumberOfRooms(updated.getNumberOfRooms());
             property.setFloorArea(updated.getFloorArea());
+            if (property instanceof House house && updated instanceof House updatedHouse) {
+                house.setNumberOfFloors(updatedHouse.getNumberOfFloors());
+                house.setPlotArea(updatedHouse.getPlotArea());
+            } else if (property instanceof Apartment apartment && updated instanceof Apartment updatedApartment) {
+                apartment.setFloorNumber(updatedApartment.getFloorNumber());
+            }
             return propertyRepository.save(property);
-        }).orElseThrow(() -> new RuntimeException("User not found"));
+        }).orElseThrow(() -> new RuntimeException("Property not found"));
     }
 
     public void deleteProperty(Long id) {

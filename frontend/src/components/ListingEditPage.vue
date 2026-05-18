@@ -1,179 +1,188 @@
 <script setup>
-import {ref} from 'vue';
-import {useRouter} from 'vue-router';
-import api from "@/api/axios.js";
-import {useAuthStore} from "@/stores/auth.js";
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import axios from 'axios'
 
-const router = useRouter();
-const authStore = useAuthStore();
+const route = useRoute()
+const router = useRouter()
+
+const loading = ref(true)
+const submitting = ref(false)
+const error = ref('')
+
+const listingType = ref('')
+const listingId = ref(null)
+const propertyId = ref(null)
+const propertyType = ref('')
 
 const form = ref({
-  listingType: 'sale',
   description: '',
   askingPrice: '',
   monthlyRent: '',
   availableFrom: '',
   property: {
-    propertyType: 'apartment',
     address: '',
     numberOfRooms: '',
     floorArea: '',
     dateOfConstruction: '',
     numberOfFloors: '',
     plotArea: '',
-    floorNum: '',
-  },
-});
+    floorNumber: '',
+  }
+})
 
-const submitting = ref(false);
-const error = ref('');
+// LocalDate from Spring can come as array [y, m, d] or string "yyyy-MM-dd"
+const toDateString = (val) => {
+  if (!val) return ''
+  if (Array.isArray(val)) {
+    const [y, m, d] = val
+    return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`
+  }
+  return String(val).split('T')[0]
+}
+
+onMounted(async () => {
+  try {
+    const response = await axios.get(`/api/listings/${route.params.id}`)
+    const listing = response.data
+    const property = listing.property
+
+    listingType.value = listing.listingType
+    listingId.value = listing.id
+    propertyId.value = property.id
+    propertyType.value = property.propertyType
+
+    form.value.description = listing.description || ''
+    form.value.property.address = property.address || ''
+    form.value.property.numberOfRooms = property.numberOfRooms ?? ''
+    form.value.property.floorArea = property.floorArea ?? ''
+    form.value.property.dateOfConstruction = toDateString(property.dateOfConstruction)
+
+    if (property.propertyType === 'house') {
+      form.value.property.numberOfFloors = property.numberOfFloors ?? ''
+      form.value.property.plotArea = property.plotArea ?? ''
+    } else {
+      form.value.property.floorNumber = property.floorNumber ?? ''
+    }
+
+    if (listing.listingType === 'sale') {
+      form.value.askingPrice = listing.askingPrice ?? ''
+    } else {
+      form.value.monthlyRent = listing.monthlyRent ?? ''
+      form.value.availableFrom = toDateString(listing.availableFrom)
+    }
+  } catch {
+    error.value = 'Nu am putut încărca datele anunțului.'
+  } finally {
+    loading.value = false
+  }
+})
 
 const handleSubmit = async () => {
-  submitting.value = true;
-  error.value = '';
-
-  const userId = authStore.user?.id;
+  submitting.value = true
+  error.value = ''
 
   try {
     const propertyPayload = {
-      user: {id: userId},
-      propertyType: form.value.property.propertyType,
+      propertyType: propertyType.value,
       address: form.value.property.address,
       numberOfRooms: Number(form.value.property.numberOfRooms),
       floorArea: Number(form.value.property.floorArea),
       dateOfConstruction: form.value.property.dateOfConstruction,
-    };
-
-    if (form.value.property.propertyType === 'house') {
-      propertyPayload.numberOfFloors = Number(form.value.property.numberOfFloors);
-      propertyPayload.plotArea = Number(form.value.property.plotArea);
-    } else {
-      propertyPayload.floorNumber = Number(form.value.property.floorNum);
     }
 
-    const propertyResponse = await api.post('/api/properties', propertyPayload);
-    const propertyId = propertyResponse.data.id;
+    if (propertyType.value === 'house') {
+      propertyPayload.numberOfFloors = Number(form.value.property.numberOfFloors)
+      propertyPayload.plotArea = Number(form.value.property.plotArea)
+    } else {
+      propertyPayload.floorNumber = Number(form.value.property.floorNumber)
+    }
 
-    if (form.value.listingType === 'sale') {
-      await api.post('/api/sales', {
-        propertyId,
+    await axios.put(`/api/properties/${propertyId.value}`, propertyPayload)
+
+    if (listingType.value === 'sale') {
+      await axios.put(`/api/sales/${listingId.value}`, {
         askingPrice: Number(form.value.askingPrice),
         description: form.value.description,
-      });
+        status: 'active',
+      })
     } else {
-      await api.post('/api/rentals', {
-        propertyId,
+      await axios.put(`/api/rentals/${listingId.value}`, {
         monthlyRent: Number(form.value.monthlyRent),
         availableFrom: form.value.availableFrom,
         description: form.value.description,
-      });
+        status: 'active',
+      })
     }
 
-    await router.push('/');
+    router.push('/profile')
   } catch {
-    error.value = 'A apărut o eroare la crearea anunțului. Încearcă din nou.';
+    error.value = 'A apărut o eroare la salvarea modificărilor. Încearcă din nou.'
   } finally {
-    submitting.value = false;
+    submitting.value = false
   }
-};
+}
 </script>
 
 <template>
-  <div class="create-page">
+  <div v-if="loading" class="loading-state">Se încarcă...</div>
+  <div v-else-if="error && !form.property.address" class="error-state">{{ error }}</div>
+
+  <div v-else class="edit-page">
     <div class="page-header">
-      <h2>Adaugă anunț</h2>
+      <h2>Editează anunț</h2>
     </div>
 
-    <form @submit.prevent="handleSubmit" class="create-form">
+    <form @submit.prevent="handleSubmit" class="edit-form">
 
-      <!-- Listing type -->
+      <!-- Listing type (read-only) -->
       <div class="form-card">
         <h4 class="card-title">Tip anunț</h4>
-        <div class="type-selector">
-          <button
-            type="button"
-            class="type-btn"
-            :class="{ active: form.listingType === 'sale' }"
-            @click="form.listingType = 'sale'"
-          >
-            Vânzare
-          </button>
-          <button
-            type="button"
-            class="type-btn"
-            :class="{ active: form.listingType === 'rental' }"
-            @click="form.listingType = 'rental'"
-          >
-            Închiriere
-          </button>
+        <div class="type-display">
+          <span class="type-badge">{{ listingType === 'sale' ? 'Vânzare' : 'Închiriere' }}</span>
+          <span class="type-badge">{{ propertyType === 'apartment' ? 'Apartament' : 'Casă' }}</span>
         </div>
       </div>
 
       <!-- Property details -->
       <div class="form-card">
         <h4 class="card-title">Detalii proprietate</h4>
-
-        <div class="type-selector" style="margin-bottom: 1.5rem;">
-          <button
-            type="button"
-            class="type-btn"
-            :class="{ active: form.property.propertyType === 'apartment' }"
-            @click="form.property.propertyType = 'apartment'"
-          >
-            Apartament
-          </button>
-          <button
-            type="button"
-            class="type-btn"
-            :class="{ active: form.property.propertyType === 'house' }"
-            @click="form.property.propertyType = 'house'"
-          >
-            Casă
-          </button>
-        </div>
-
         <div class="fields-grid">
           <div class="form-group full-width">
             <label>Adresă</label>
-            <input v-model="form.property.address" type="text" required
-                   placeholder="Str. Exemplu 10, Cluj-Napoca"/>
+            <input v-model="form.property.address" type="text" required placeholder="Str. Exemplu 10, Cluj-Napoca" />
           </div>
 
           <div class="form-group">
             <label>Număr camere</label>
-            <input v-model="form.property.numberOfRooms" type="number" required min="1"
-                   placeholder="3"/>
+            <input v-model="form.property.numberOfRooms" type="number" required min="1" />
           </div>
 
           <div class="form-group">
             <label>Suprafață utilă (m²)</label>
-            <input v-model="form.property.floorArea" type="number" required min="1"
-                   placeholder="85"/>
+            <input v-model="form.property.floorArea" type="number" required min="1" />
           </div>
 
           <div class="form-group">
             <label>An construcție</label>
-            <input v-model="form.property.dateOfConstruction" type="date" required/>
+            <input v-model="form.property.dateOfConstruction" type="date" required />
           </div>
 
-          <template v-if="form.property.propertyType === 'house'">
+          <template v-if="propertyType === 'house'">
             <div class="form-group">
               <label>Număr etaje</label>
-              <input v-model="form.property.numberOfFloors" type="number" required min="1"
-                     placeholder="2"/>
+              <input v-model="form.property.numberOfFloors" type="number" required min="1" />
             </div>
             <div class="form-group">
               <label>Suprafață teren (m²)</label>
-              <input v-model="form.property.plotArea" type="number" required min="1"
-                     placeholder="300"/>
+              <input v-model="form.property.plotArea" type="number" required min="1" />
             </div>
           </template>
 
-          <template v-if="form.property.propertyType === 'apartment'">
+          <template v-if="propertyType === 'apartment'">
             <div class="form-group">
               <label>Etaj</label>
-              <input v-model="form.property.floorNum" type="number" required min="0"
-                     placeholder="3"/>
+              <input v-model="form.property.floorNumber" type="number" required min="0" />
             </div>
           </template>
         </div>
@@ -185,26 +194,24 @@ const handleSubmit = async () => {
         <div class="fields-grid">
           <div class="form-group full-width">
             <label>Descriere</label>
-            <textarea v-model="form.description" rows="4"
-                      placeholder="Descrie proprietatea..."></textarea>
+            <textarea v-model="form.description" rows="4" placeholder="Descrie proprietatea..."></textarea>
           </div>
 
-          <template v-if="form.listingType === 'sale'">
+          <template v-if="listingType === 'sale'">
             <div class="form-group">
               <label>Preț cerut (EUR)</label>
-              <input v-model="form.askingPrice" type="number" required min="0"
-                     placeholder="250000"/>
+              <input v-model="form.askingPrice" type="number" required min="0" />
             </div>
           </template>
 
-          <template v-if="form.listingType === 'rental'">
+          <template v-if="listingType === 'rental'">
             <div class="form-group">
               <label>Chirie lunară (EUR)</label>
-              <input v-model="form.monthlyRent" type="number" required min="0" placeholder="500"/>
+              <input v-model="form.monthlyRent" type="number" required min="0" />
             </div>
             <div class="form-group">
               <label>Disponibil din</label>
-              <input v-model="form.availableFrom" type="date" required/>
+              <input v-model="form.availableFrom" type="date" required />
             </div>
           </template>
         </div>
@@ -215,7 +222,7 @@ const handleSubmit = async () => {
       <div class="form-actions">
         <button type="button" class="cancel-btn" @click="router.back()">Anulează</button>
         <button type="submit" class="submit-btn" :disabled="submitting">
-          {{ submitting ? 'Se publică...' : 'Publică anunț' }}
+          {{ submitting ? 'Se salvează...' : 'Salvează modificările' }}
         </button>
       </div>
 
@@ -224,7 +231,14 @@ const handleSubmit = async () => {
 </template>
 
 <style scoped>
-.create-page {
+.loading-state,
+.error-state {
+  text-align: center;
+  padding: 3rem;
+  color: var(--color-text-muted);
+}
+
+.edit-page {
   max-width: 720px;
   margin: 0 auto;
 }
@@ -233,7 +247,7 @@ const handleSubmit = async () => {
   margin-bottom: 1.5rem;
 }
 
-.create-form {
+.edit-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -254,26 +268,18 @@ const handleSubmit = async () => {
   letter-spacing: 0.05em;
 }
 
-.type-selector {
+.type-display {
   display: flex;
   gap: 0.75rem;
 }
 
-.type-btn {
-  padding: 0.5rem 1.25rem;
-  border: 1px solid var(--color-border);
+.type-badge {
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--color-primary);
   border-radius: 4px;
-  background: white;
-  color: var(--color-text-main);
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.type-btn.active {
   background: var(--color-primary);
   color: white;
-  border-color: var(--color-primary);
+  font-size: 0.95rem;
 }
 
 .fields-grid {

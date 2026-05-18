@@ -1,5 +1,6 @@
 package com.thedevs.real_estate.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thedevs.real_estate.model.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -50,11 +51,13 @@ public class User implements UserDetails {
         return id;
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
+    @JsonIgnore
     @Override
     public String getPassword() {
         return this.password;

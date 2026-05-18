@@ -31,7 +31,7 @@
         <slot>{{ label }}</slot>
       </span>
 
-      <span class="cta-btn__arrow" aria-hidden="true">
+      <span class="cta-btn__arrow" aria-hidden="true" v-if="hasArrow">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="14"
@@ -90,6 +90,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  hasArrow: {
+    type: Boolean,
+    default: true,
+  }
 })
 
 const emit = defineEmits(['click'])

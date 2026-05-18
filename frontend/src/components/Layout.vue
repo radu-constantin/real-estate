@@ -1,15 +1,6 @@
 <script setup>
-import {RouterLink} from "vue-router";
+import { RouterLink } from "vue-router";
 import Button from './small_components/Button.vue';
-import {useAuthStore} from '../stores/auth'
-import router from "@/router/index.js";
-
-const authStore = useAuthStore()
-
-const logout = () => {
-  authStore.logout()
-  router.push('/auth')
-}
 </script>
 
 <template>
@@ -27,12 +18,8 @@ const logout = () => {
             </RouterLink>
           </li>
           <li>Anunțuri</li>
-          <li>Profilul meu</li>
           <li>
-            <RouterLink to="/auth">
-              <Button label="Logout" style="background-color: white;">
-              </Button>
-            </RouterLink>
+            <RouterLink to="/profile" class="nav-link">Profilul meu</RouterLink>
           </li>
         </ul>
       </nav>
@@ -79,6 +66,16 @@ ul li {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
 }
 
 .content {
