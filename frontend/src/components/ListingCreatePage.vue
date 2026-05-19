@@ -86,7 +86,6 @@ const handleSubmit = async () => {
 
     <form @submit.prevent="handleSubmit" class="create-form">
 
-      <!-- Listing type -->
       <div class="form-card">
         <h4 class="card-title">Tip anunț</h4>
         <div class="type-selector">
@@ -109,7 +108,6 @@ const handleSubmit = async () => {
         </div>
       </div>
 
-      <!-- Property details -->
       <div class="form-card">
         <h4 class="card-title">Detalii proprietate</h4>
 
@@ -179,7 +177,6 @@ const handleSubmit = async () => {
         </div>
       </div>
 
-      <!-- Listing details -->
       <div class="form-card">
         <h4 class="card-title">Detalii anunț</h4>
         <div class="fields-grid">

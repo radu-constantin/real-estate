@@ -4,14 +4,14 @@ import { ref, watch } from 'vue';
 const emit = defineEmits(['filter-change']);
 
 const searchQuery = ref('');
-const maxPrice = ref(1000000);
-const minBeds = ref(0);
+const maxPrice = ref(300000);
+const minRooms = ref(0);
 
-watch([searchQuery, maxPrice, minBeds], () => {
+watch([searchQuery, maxPrice, minRooms], () => {
   emit('filter-change', {
     search: searchQuery.value,
     price: maxPrice.value,
-    beds: minBeds.value
+    rooms: minRooms.value
   });
 });
 </script>
@@ -24,27 +24,27 @@ watch([searchQuery, maxPrice, minBeds], () => {
         id="search"
         v-model="searchQuery"
         type="text"
-        placeholder="e.g. Beverly Hills"
+        placeholder="e.g. București"
       />
     </div>
 
     <div class="filter-group">
-      <label for="price">Preț maxim: ${{ maxPrice.toLocaleString() }}</label>
+      <label for="price">Preț maxim: €{{ maxPrice.toLocaleString() }}</label>
       <input
         id="price"
         v-model.number="maxPrice"
         type="range"
-        min="100000"
-        max="2000000"
-        step="50000"
+        min="10000"
+        max="1000000"
+        step="5000"
       />
     </div>
 
     <div class="filter-group">
-      <label for="beds">Număr camere</label>
-      <select id="beds" v-model.number="minBeds">
+      <label for="rooms">Număr camere</label>
+      <select id="rooms" v-model.number="minRooms">
         <option :value="0">Any</option>
-        <option v-for="n in 5" :key="n" :value="n">{{ n }}+ Beds</option>
+        <option v-for="n in 5" :key="n" :value="n">{{ n }} +</option>
       </select>
     </div>
   </div>

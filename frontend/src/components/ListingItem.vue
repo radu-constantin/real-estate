@@ -17,7 +17,6 @@ const router = useRouter();
 const goToDetail = () => router.push(`/listings/${props.listing.id}`);
 
 const property = props.listing.property;
-console.log(property.propertyType)
 
 
 const formattedPrice = computed(() => {
