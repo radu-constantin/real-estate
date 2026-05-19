@@ -14,15 +14,17 @@
   - [ ] Add validation for new listing;
 - [ ] Allow user to edit listing;
   - [ ] Add validation for edit listing;
+  - [ ] Need to check if the listing belongs to the currently logged user before allowing;
 - [ ] Allow user to delete listing;
   - [ ] Add validation for delete listing;
+  - [ ] Need to check if the listing belongs to the currently logged user before allowing;
 - [ ] Implement messaging system;
 - [X] Implement user profile;
 - [ ] Implement user favorites;
 - [ ] Implement error pages;
 - [ ] Implement logs;
-- [ ] Implement filters;
-- [ ] Implement search; ??
+- [X] Implement filters;
+- [X] Implement search; ??
 - [ ] Implement pagination; ??
 - [ ] Implement file upload;
 
@@ -40,3 +42,5 @@
 - [ ] Split address property into country, city and address;
 - [ ] Move SECRET_KEY from JwtService to deployment service; !!!!
 - [ ] Add debounce to frontend filter listing;
+- [ ] BUG When a request is made, if the token is expired, the user should be redirected to the login page;
+- [ ] If user switches filter for type to rental, the price query should be made for monthly_rent instead of asking_price 

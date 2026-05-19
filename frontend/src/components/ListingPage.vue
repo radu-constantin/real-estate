@@ -49,10 +49,4 @@ const filteredListings = computed(() => {
 .page-header {
   margin-bottom: 1.5rem;
 }
-
-.empty-state {
-  text-align: center;
-  padding: 3rem;
-  color: var(--color-text-muted);
-}
 </style>

@@ -10,8 +10,14 @@ const props = defineProps({
   showEdit: {
     type: Boolean,
     default: false
+  },
+  showDelete: {
+    type: Boolean,
+    default: false
   }
 });
+
+const emit = defineEmits(['delete']);
 
 const router = useRouter();
 const goToDetail = () => router.push(`/listings/${props.listing.id}`);
@@ -55,6 +61,7 @@ const formattedPrice = computed(() => {
     <div class="action-section">
       <button class="view-btn" @click="goToDetail">Vezi detalii</button>
       <button v-if="showEdit" class="edit-btn" @click="router.push(`/listings/${listing.id}/edit`)">Editează</button>
+      <button v-if="showDelete" class="delete-btn" @click="emit('delete', listing.id)">Șterge</button>
     </div>
   </article>
 </template>
@@ -156,6 +163,23 @@ const formattedPrice = computed(() => {
 
 .edit-btn:hover {
   background-color: var(--color-primary);
+  color: white;
+}
+
+.delete-btn {
+  margin-top: 0.5rem;
+  background-color: white;
+  color: #c62828;
+  border: 1px solid #c62828;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.15s, color 0.15s;
+}
+
+.delete-btn:hover {
+  background-color: #c62828;
   color: white;
 }
 

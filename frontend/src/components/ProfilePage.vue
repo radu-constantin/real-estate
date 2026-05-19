@@ -10,6 +10,8 @@ const router = useRouter()
 const user = authStore.user
 const listings = ref([])
 const loading = ref(true)
+const deleteModalVisible = ref(false)
+const listingToDelete = ref(null)
 
 const initials = computed(() => {
   return user?.username?.slice(0, 2).toUpperCase() || '??'
@@ -27,6 +29,26 @@ onMounted(async () => {
 const logout = () => {
   authStore.logout()
   router.push('/auth')
+}
+
+const requestDelete = (id) => {
+  listingToDelete.value = id
+  deleteModalVisible.value = true
+}
+
+const cancelDelete = () => {
+  deleteModalVisible.value = false
+  listingToDelete.value = null
+}
+
+const confirmDelete = async () => {
+  try {
+    await axios.delete(`/api/listings/${listingToDelete.value}`)
+    listings.value = listings.value.filter(l => l.id !== listingToDelete.value)
+  } finally {
+    deleteModalVisible.value = false
+    listingToDelete.value = null
+  }
 }
 </script>
 
@@ -60,7 +82,14 @@ const logout = () => {
       <template v-else>
         <div v-if="listings.length > 0">
           <p class="results-count">{{ listings.length }} {{ listings.length === 1 ? 'anunț' : 'anunțuri' }}</p>
-          <ListingItem v-for="listing in listings" :key="listing.id" :listing="listing" :showEdit="true" />
+          <ListingItem
+            v-for="listing in listings"
+            :key="listing.id"
+            :listing="listing"
+            :showEdit="true"
+            :showDelete="true"
+            @delete="requestDelete"
+          />
         </div>
         <div v-else class="empty-state">
           <p>Nu ai publicat niciun anunț încă.</p>
@@ -69,6 +98,20 @@ const logout = () => {
       </template>
     </div>
   </div>
+
+  <!-- Delete confirmation modal -->
+  <Teleport to="body">
+    <div v-if="deleteModalVisible" class="modal-backdrop" @click.self="cancelDelete">
+      <div class="modal">
+        <h3 class="modal-title">Confirmare ștergere</h3>
+        <p class="modal-body">Ești sigur că vrei să ștergi acest anunț? Acțiunea nu poate fi anulată.</p>
+        <div class="modal-actions">
+          <button class="modal-cancel" @click="cancelDelete">Anulează</button>
+          <button class="modal-confirm" @click="confirmDelete">Șterge</button>
+        </div>
+      </div>
+    </div>
+  </Teleport>
 </template>
 
 <style scoped>
@@ -246,5 +289,74 @@ const logout = () => {
     align-items: flex-start;
     gap: 1rem;
   }
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.modal-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+  color: var(--color-text-main);
+}
+
+.modal-body {
+  margin: 0 0 1.5rem;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.modal-cancel {
+  padding: 0.6rem 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: white;
+  color: var(--color-text-main);
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.15s;
+}
+
+.modal-cancel:hover {
+  background: var(--color-bg-light);
+}
+
+.modal-confirm {
+  padding: 0.6rem 1.25rem;
+  border: none;
+  border-radius: 4px;
+  background: #c62828;
+  color: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: opacity 0.15s;
+}
+
+.modal-confirm:hover {
+  opacity: 0.85;
 }
 </style>
