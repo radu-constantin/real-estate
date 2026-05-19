@@ -11,27 +11,25 @@ onMounted(async () => {
   listings.value = response.data
 })
 
-const activeFilters = ref({
+  const activeFilters = ref({
   search: '',
   price: 2000000,
-  rooms: 0
+  rooms: 0,
+  type: 'sale'
 });
 
 const handleFilterChange = (newFilters) => {
   activeFilters.value = newFilters;
+  console.log(activeFilters.value)
 };
 
 const filteredListings = computed(() => {
-
   return listings.value.filter(listing => {
     const matchesSearch = activeFilters.value.search ? listing.property.address.toLowerCase().includes(activeFilters.value.search.toLowerCase()) : true
     const matchesPrice = listing.askingPrice <= activeFilters.value.price;
     const matchesRooms = listing.property.numberOfRooms >= activeFilters.value.rooms;
-    console.log({
-      propertyRooms: listing.property.numberOfRooms,
-      filterRooms: activeFilters.value.rooms
-    })
-    return matchesSearch && matchesPrice && matchesRooms;
+    const matchesType = listing.listingType === activeFilters.value.type
+    return matchesSearch && matchesPrice && matchesRooms && matchesType;
   });
 });
 </script>
@@ -45,10 +43,6 @@ const filteredListings = computed(() => {
   <ListingFilters @filter-change="handleFilterChange"/>
 
   <ListingList :listings="filteredListings"/>
-
-  <div v-if="filteredListings.length === 0" class="empty-state">
-    <p>Nu sunt proprietăți conform criteriilor de căutare. Ajustează filtrele!</p>
-  </div>
 </template>
 
 <style scoped>

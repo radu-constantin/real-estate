@@ -1,23 +1,30 @@
 <script setup>
-import { ref, watch } from 'vue';
+import {ref, watch} from 'vue';
+import ToggleButton from "@/components/small_components/ToggleButton.vue";
 
 const emit = defineEmits(['filter-change']);
 
 const searchQuery = ref('');
 const maxPrice = ref(300000);
 const minRooms = ref(0);
+const type = ref('sale')
 
-watch([searchQuery, maxPrice, minRooms], () => {
+watch([searchQuery, maxPrice, minRooms, type], () => {
   emit('filter-change', {
     search: searchQuery.value,
     price: maxPrice.value,
-    rooms: minRooms.value
+    rooms: minRooms.value,
+    type: type.value
   });
 });
 </script>
 
 <template>
   <div class="filters-container">
+    <div class="filter-group">
+      <label for="type">Tip</label>
+      <ToggleButton v-model="type"/>
+    </div>
     <div class="filter-group">
       <label for="search">Locație</label>
       <input
@@ -53,6 +60,7 @@ watch([searchQuery, maxPrice, minRooms], () => {
 <style scoped>
 .filters-container {
   display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
   background: white;
   padding: 1.5rem;

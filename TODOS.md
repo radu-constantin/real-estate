@@ -17,13 +17,14 @@
 - [ ] Allow user to delete listing;
   - [ ] Add validation for delete listing;
 - [ ] Implement messaging system;
-- [ ] Implement user profile;
+- [X] Implement user profile;
 - [ ] Implement user favorites;
 - [ ] Implement error pages;
 - [ ] Implement logs;
 - [ ] Implement filters;
 - [ ] Implement search; ??
 - [ ] Implement pagination; ??
+- [ ] Implement file upload;
 
 - [X] Authentication with JDBC;
   - [X] Encode password (BCrypt)
@@ -38,3 +39,4 @@
 - [ ] Right now 2 requests are made for creating a listing (1 for property and 1 for listing);
 - [ ] Split address property into country, city and address;
 - [ ] Move SECRET_KEY from JwtService to deployment service; !!!!
+- [ ] Add debounce to frontend filter listing;

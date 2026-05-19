@@ -20,7 +20,7 @@ const props = defineProps({
     </div>
 
     <div v-else class="no-results">
-      <p>No listings found matching your criteria.</p>
+      <p>Nu au fost găsite anunțuri conform criteriilor de căutare.</p>
     </div>
   </section>
 </template>
