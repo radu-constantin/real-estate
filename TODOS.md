@@ -44,3 +44,4 @@
 - [ ] Add debounce to frontend filter listing;
 - [ ] BUG When a request is made, if the token is expired, the user should be redirected to the login page;
 - [ ] If user switches filter for type to rental, the price query should be made for monthly_rent instead of asking_price 
+- [ ] Move database to docker container; !!!!
