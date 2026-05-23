@@ -7,7 +7,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "properties")
@@ -46,6 +48,9 @@ public class Property {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<PropertyPhoto> photos = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -89,5 +94,9 @@ public class Property {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<PropertyPhoto> getPhotos() {
+        return photos;
     }
 }

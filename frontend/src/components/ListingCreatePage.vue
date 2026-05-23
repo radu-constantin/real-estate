@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from 'vue';
+import {ref, computed} from 'vue';
 import {useRouter} from 'vue-router';
 import api from "@/api/axios.js";
 import {useAuthStore} from "@/stores/auth.js";
@@ -27,6 +27,11 @@ const form = ref({
 
 const submitting = ref(false);
 const error = ref('');
+
+const selectedFiles = ref([]);
+const previews = computed(() => selectedFiles.value.map(f => URL.createObjectURL(f)));
+const onFilesSelected = (e) => { selectedFiles.value = [...e.target.files]; };
+const removeFile = (i) => { selectedFiles.value = selectedFiles.value.filter((_, idx) => idx !== i); };
 
 const handleSubmit = async () => {
   submitting.value = true;
@@ -67,6 +72,12 @@ const handleSubmit = async () => {
         availableFrom: form.value.availableFrom,
         description: form.value.description,
       });
+    }
+
+    for (const file of selectedFiles.value) {
+      const fd = new FormData();
+      fd.append('file', file);
+      await api.post(`/api/properties/${propertyId}/photos`, fd);
     }
 
     await router.push('/');
@@ -204,6 +215,20 @@ const handleSubmit = async () => {
               <input v-model="form.availableFrom" type="date" required/>
             </div>
           </template>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h4 class="card-title">Fotografii</h4>
+        <label class="upload-label">
+          <input type="file" multiple accept="image/*" @change="onFilesSelected" class="file-input" />
+          + Adaugă fotografii
+        </label>
+        <div v-if="previews.length" class="photo-previews">
+          <div v-for="(src, i) in previews" :key="i" class="preview-item">
+            <img :src="src" class="preview-img" alt="preview" />
+            <button type="button" class="remove-photo-btn" @click="removeFile(i)">×</button>
+          </div>
         </div>
       </div>
 
@@ -367,5 +392,65 @@ const handleSubmit = async () => {
   .form-group.full-width {
     grid-column: span 1;
   }
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-label {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px dashed var(--color-border);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  transition: border-color 0.2s;
+}
+
+.upload-label:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.photo-previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.preview-item {
+  position: relative;
+  width: 100px;
+  height: 80px;
+}
+
+.preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+}
+
+.remove-photo-btn {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  background: #c62828;
+  color: white;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 </style>

@@ -27,6 +27,8 @@ public class CloudinaryService {
         ));
     }
 
+    public record UploadResult(String url, String publicId) {}
+
     public String uploadImage(MultipartFile file) {
         try {
             Map<?, ?> uploadResult = cloudinary.uploader().upload(
@@ -41,6 +43,32 @@ public class CloudinaryService {
 
         } catch (IOException e) {
             throw new RuntimeException("Failed to upload image to Cloudinary", e);
+        }
+    }
+
+    public UploadResult uploadImageWithId(MultipartFile file) {
+        try {
+            Map<?, ?> uploadResult = cloudinary.uploader().upload(
+                    file.getBytes(),
+                    ObjectUtils.asMap(
+                            "folder", "real_estate_properties",
+                            "resource_type", "image"
+                    )
+            );
+            return new UploadResult(
+                    uploadResult.get("secure_url").toString(),
+                    uploadResult.get("public_id").toString()
+            );
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image to Cloudinary", e);
+        }
+    }
+
+    public void deleteImage(String publicId) {
+        try {
+            cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete image from Cloudinary", e);
         }
     }
 }

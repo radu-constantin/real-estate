@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
+import api from '@/api/axios.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -14,6 +15,17 @@ const listingType = ref('')
 const listingId = ref(null)
 const propertyId = ref(null)
 const propertyType = ref('')
+
+const existingPhotos = ref([])
+const newFiles = ref([])
+const newPreviews = computed(() => newFiles.value.map(f => URL.createObjectURL(f)))
+const onNewFilesSelected = (e) => { newFiles.value = [...e.target.files] }
+const removeNewFile = (i) => { newFiles.value = newFiles.value.filter((_, idx) => idx !== i) }
+
+const removeExistingPhoto = async (photoId) => {
+  await api.delete(`/api/properties/${propertyId.value}/photos/${photoId}`)
+  existingPhotos.value = existingPhotos.value.filter(p => p.id !== photoId)
+}
 
 const form = ref({
   description: '',
@@ -71,6 +83,8 @@ onMounted(async () => {
       form.value.monthlyRent = listing.monthlyRent ?? ''
       form.value.availableFrom = toDateString(listing.availableFrom)
     }
+
+    existingPhotos.value = property.photos || []
   } catch {
     error.value = 'Nu am putut încărca datele anunțului.'
   } finally {
@@ -114,6 +128,14 @@ const handleSubmit = async () => {
         status: 'active',
       })
     }
+
+    for (const file of newFiles.value) {
+      const fd = new FormData()
+      fd.append('file', file)
+      const { data } = await api.post(`/api/properties/${propertyId.value}/photos`, fd)
+      existingPhotos.value.push(data)
+    }
+    newFiles.value = []
 
     router.push('/profile')
   } catch {
@@ -214,6 +236,28 @@ const handleSubmit = async () => {
               <input v-model="form.availableFrom" type="date" required />
             </div>
           </template>
+        </div>
+      </div>
+
+      <!-- Photos -->
+      <div class="form-card">
+        <h4 class="card-title">Fotografii</h4>
+        <div v-if="existingPhotos.length" class="photo-previews">
+          <div v-for="photo in existingPhotos" :key="photo.id" class="preview-item">
+            <img :src="photo.url" class="preview-img" alt="photo" />
+            <button type="button" class="remove-photo-btn" @click="removeExistingPhoto(photo.id)">×</button>
+          </div>
+        </div>
+        <p v-else class="no-photos-text">Nicio fotografie adăugată.</p>
+        <label class="upload-label" style="margin-top: 1rem; display: inline-block;">
+          <input type="file" multiple accept="image/*" @change="onNewFilesSelected" class="file-input" />
+          + Adaugă fotografii
+        </label>
+        <div v-if="newPreviews.length" class="photo-previews" style="margin-top: 0.5rem;">
+          <div v-for="(src, i) in newPreviews" :key="i" class="preview-item">
+            <img :src="src" class="preview-img" alt="preview" />
+            <button type="button" class="remove-photo-btn" @click="removeNewFile(i)">×</button>
+          </div>
         </div>
       </div>
 
@@ -376,5 +420,70 @@ const handleSubmit = async () => {
   .form-group.full-width {
     grid-column: span 1;
   }
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-label {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px dashed var(--color-border);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  transition: border-color 0.2s;
+}
+
+.upload-label:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.photo-previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.preview-item {
+  position: relative;
+  width: 100px;
+  height: 80px;
+}
+
+.preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+}
+
+.remove-photo-btn {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  background: #c62828;
+  color: white;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.no-photos-text {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin: 0 0 0.5rem;
 }
 </style>

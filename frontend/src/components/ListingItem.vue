@@ -1,6 +1,7 @@
 <script setup>
-import { computed } from 'vue';
-import { useRouter } from 'vue-router';
+import {computed} from 'vue';
+import {useRouter} from 'vue-router';
+import {capitalize} from "lodash";
 
 const props = defineProps({
   listing: {
@@ -24,6 +25,11 @@ const goToDetail = () => router.push(`/listings/${props.listing.id}`);
 
 const property = props.listing.property;
 
+const propertyPhotos = property?.photos;
+
+const hasPhotos = computed(() => propertyPhotos && propertyPhotos.length > 0);
+
+const placeholderImage = 'https://placehold.co/600x400/png';
 
 const formattedPrice = computed(() => {
   return new Intl.NumberFormat('en-US', {
@@ -37,31 +43,46 @@ const formattedPrice = computed(() => {
 <template>
   <article class="listing-row">
     <div class="image-section">
-      <img src="../assets/images/random_house.jpg" alt="House photo" class="listing-image" />
+      <img :src="hasPhotos ? propertyPhotos[0].url : placeholderImage" alt="House photo"
+           class="listing-image"/>
     </div>
 
     <div class="info-section">
       <div class="header-info">
-        <h3 class="price">{{ formattedPrice }}</h3>
-        <h4 class="title">{{ property.address }}</h4>
+        <div class="property-details">
+          <h3 class="price">{{ formattedPrice }}</h3>
+          <h4 class="title">{{ property.address }}</h4>
+        </div>
+        <div>
+          <h3 class="type">{{ capitalize(property.propertyType) }}</h3>
+        </div>
       </div>
 
       <div class="specs-row">
         <div class="spec-item"><strong>{{ property.numberOfRooms }}</strong> camere</div>
-        <div class="spec-item"><strong>{{ property.floorArea }}</strong> m<sup>2</sup> </div>
+        <div class="spec-item"><strong>{{ property.floorArea }}</strong> m<sup>2</sup></div>
 
-        <div class="spec-item" v-if="property.propertyType === 'house'"><strong>{{ property.numberOfFloors }}</strong> etaje </div>
-        <div class="spec-item" v-if="property.propertyType === 'house'"><strong>{{ property.plotArea }}</strong> m<sup>2</sup> teren </div>
+        <div class="spec-item" v-if="property.propertyType === 'house'">
+          <strong>{{ property.numberOfFloors }}</strong> etaje
+        </div>
+        <div class="spec-item" v-if="property.propertyType === 'house'"><strong>{{
+            property.plotArea
+          }}</strong> m<sup>2</sup> teren
+        </div>
 
-        <div class="spec-item" v-if="property.propertyType === 'apartment'"><strong>etajul {{ property.floorNumber }}</strong></div>
+        <div class="spec-item" v-if="property.propertyType === 'apartment'"><strong>etajul
+          {{ property.floorNumber }}</strong></div>
 
       </div>
     </div>
 
     <div class="action-section">
       <button class="view-btn" @click="goToDetail">Vezi detalii</button>
-      <button v-if="showEdit" class="edit-btn" @click="router.push(`/listings/${listing.id}/edit`)">Editează</button>
-      <button v-if="showDelete" class="delete-btn" @click="emit('delete', listing.id)">Șterge</button>
+      <button v-if="showEdit" class="edit-btn" @click="router.push(`/listings/${listing.id}/edit`)">
+        Editează
+      </button>
+      <button v-if="showDelete" class="delete-btn" @click="emit('delete', listing.id)">Șterge
+      </button>
     </div>
   </article>
 </template>
@@ -100,6 +121,13 @@ const formattedPrice = computed(() => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.header-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .header-info .price {
@@ -187,9 +215,11 @@ const formattedPrice = computed(() => {
   .listing-row {
     flex-direction: column;
   }
+
   .image-section {
     width: 100%;
   }
+
   .action-section {
     border-left: none;
     border-top: 1px solid var(--color-border);

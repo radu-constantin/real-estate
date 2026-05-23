@@ -22,7 +22,9 @@ const priceSuffix = computed(() => props.listing.listingType === 'rental' ? ' / 
 const listingTypeLabel = computed(() => props.listing.listingType === 'rental' ? 'Închiriere' : 'Vânzare');
 
 const images = computed(() =>
-  props.listing.photos?.length ? props.listing.photos.map(p => p.url) : [placeholderImage]
+  props.listing.property?.photos?.length
+    ? props.listing.property.photos.map(p => p.url)
+    : [placeholderImage]
 );
 </script>
 

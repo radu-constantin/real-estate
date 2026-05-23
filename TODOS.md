@@ -26,7 +26,8 @@
 - [X] Implement filters;
 - [X] Implement search; ??
 - [ ] Implement pagination; ??
-- [ ] Implement file upload;
+- [X] Implement file upload;
+  - [X] Find a better placeholder for images;
 
 - [X] Authentication with JDBC;
   - [X] Encode password (BCrypt)
