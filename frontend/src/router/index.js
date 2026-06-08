@@ -7,6 +7,7 @@ import ListingEditPage from '@/components/ListingEditPage.vue'
 import InquiriesPage from '@/components/InquiriesPage.vue'
 import AuthPage from "@/components/AuthPage.vue"
 import { useAuthStore } from "@/stores/auth.js"
+import NotFound from "@/components/NotFound.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,7 +25,8 @@ const router = createRouter({
     { path: '/inquiries', component: InquiriesPage, meta: { requiresAuth: true } },
     {
       path: '/:pathMatch(.*)*',
-      redirect: '/auth'
+      component: NotFound,
+      meta: { requiresAuth: true }
     }
   ],
 })

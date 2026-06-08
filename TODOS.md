@@ -18,7 +18,7 @@
 - [ ] Allow user to delete listing;
   - [ ] Add validation for delete listing;
   - [ ] Need to check if the listing belongs to the currently logged user before allowing;
-- [ ] Implement messaging system;
+- [X] Implement messaging system;
 - [X] Implement user profile;
 - [ ] Implement user favorites; (mai spre final)
 - [ ] Implement error pages;
