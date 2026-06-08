@@ -1,7 +1,7 @@
 <template>
   <div class="auth-container">
     <div class="auth-card">
-      <h2>{{ isLoginMode ? 'Login to Real Estate' : 'Create an Account' }}</h2>
+      <h2>{{ isLoginMode ? 'Login în Imobiliare' : 'Creează cont' }}</h2>
 
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
@@ -11,7 +11,7 @@
             id="username"
             v-model="username"
             required
-            placeholder="Enter username"
+            placeholder="Introdu numele de utilizator"
           />
         </div>
 
@@ -22,7 +22,7 @@
             id="email"
             v-model="email"
             required
-            placeholder="Enter email"
+            placeholder="Introdu adresa de email"
           />
         </div>
 
@@ -33,12 +33,12 @@
             id="password"
             v-model="password"
             required
-            placeholder="Enter password"
+            placeholder="Introdu parola"
           />
         </div>
 
         <button type="submit" :disabled="authStore.loading">
-          {{ authStore.loading ? 'Processing...' : (isLoginMode ? 'Sign In' : 'Register') }}
+          {{ authStore.loading ? 'Procesare...' : (isLoginMode ? 'Logare' : 'Înregistrare') }}
         </button>
       </form>
 
@@ -46,7 +46,7 @@
 
       <div class="toggle-mode">
         <a href="#" @click.prevent="isLoginMode = !isLoginMode">
-          {{ isLoginMode ? "Don't have an account? Register here" : 'Already have an account? Login here' }}
+          {{ isLoginMode ? "Nu ai un cont? Înregistrează-te aici" : 'Ai deja un cont? Loghează-te aici' }}
         </a>
       </div>
     </div>

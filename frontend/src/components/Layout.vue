@@ -1,6 +1,34 @@
 <script setup>
-import { RouterLink } from "vue-router";
+import { ref, watch, onMounted, onUnmounted } from 'vue';
+import { RouterLink, useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import api from '@/api/axios';
 import Button from './small_components/Button.vue';
+
+const authStore = useAuthStore();
+const route = useRoute();
+const unreadCount = ref(0);
+let pollInterval = null;
+
+const fetchUnreadCount = async () => {
+  if (!authStore.isAuthenticated) return;
+  try {
+    const res = await api.get('/api/inquiries/unread-count');
+    unreadCount.value = res.data.count;
+  } catch {
+    // silent fail — badge just won't update
+  }
+};
+
+// Refresh badge on every navigation so it's always up-to-date without waiting for the poll
+watch(() => route.path, () => fetchUnreadCount());
+
+onMounted(() => {
+  fetchUnreadCount();
+  pollInterval = setInterval(fetchUnreadCount, 30000);
+});
+
+onUnmounted(() => clearInterval(pollInterval));
 </script>
 
 <template>
@@ -17,7 +45,12 @@ import Button from './small_components/Button.vue';
               </Button>
             </RouterLink>
           </li>
-          <li>Anunțuri</li>
+          <li>
+            <RouterLink to="/inquiries" class="nav-link">
+              Mesaje
+              <span v-if="unreadCount > 0" class="badge">{{ unreadCount }}</span>
+            </RouterLink>
+          </li>
           <li>
             <RouterLink to="/profile" class="nav-link">Profilul meu</RouterLink>
           </li>
@@ -76,6 +109,17 @@ ul li {
 
 .nav-link:hover {
   text-decoration: underline;
+}
+
+.badge {
+  background-color: #c62828;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 0.1rem 0.4rem;
+  margin-left: 4px;
+  vertical-align: middle;
 }
 
 .content {

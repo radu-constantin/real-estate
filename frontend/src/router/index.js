@@ -4,6 +4,7 @@ import ListingDetailPage from '@/components/ListingDetailPage.vue'
 import ListingCreatePage from '@/components/ListingCreatePage.vue'
 import ProfilePage from '@/components/ProfilePage.vue'
 import ListingEditPage from '@/components/ListingEditPage.vue'
+import InquiriesPage from '@/components/InquiriesPage.vue'
 import AuthPage from "@/components/AuthPage.vue"
 import { useAuthStore } from "@/stores/auth.js"
 
@@ -20,6 +21,7 @@ const router = createRouter({
     { path: '/listings/:id', component: ListingDetailPage, meta: { requiresAuth: true } },
     { path: '/profile', component: ProfilePage, meta: { requiresAuth: true } },
     { path: '/listings/:id/edit', component: ListingEditPage, meta: { requiresAuth: true } },
+    { path: '/inquiries', component: InquiriesPage, meta: { requiresAuth: true } },
     {
       path: '/:pathMatch(.*)*',
       redirect: '/auth'

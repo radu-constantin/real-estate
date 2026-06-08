@@ -1,7 +1,7 @@
 - [X] Create PGSQL database;
 - [X] Add tables;
 - [X] Connect via Spring JPA;
-- [ ] Create full REST API;
+- [X] Create full REST API;
   - [X] Create user API;
     - [X] Create properties API;
 - [X] Add some sort of validation; ex: max number of rooms;
@@ -9,10 +9,10 @@
 - [ ] Implement tests for validation rules;
 - [ ] Properly setup axios in main.js
 
-- [ ] Finish individual listing page;
+- [X] Finish individual listing page;
 - [X] Allow user to create new listing;
   - [ ] Add validation for new listing;
-- [ ] Allow user to edit listing;
+- [X] Allow user to edit listing;
   - [ ] Add validation for edit listing;
   - [ ] Need to check if the listing belongs to the currently logged user before allowing;
 - [ ] Allow user to delete listing;
@@ -20,7 +20,7 @@
   - [ ] Need to check if the listing belongs to the currently logged user before allowing;
 - [ ] Implement messaging system;
 - [X] Implement user profile;
-- [ ] Implement user favorites;
+- [ ] Implement user favorites; (mai spre final)
 - [ ] Implement error pages;
 - [ ] Implement logs;
 - [X] Implement filters;
@@ -34,6 +34,7 @@
   - [ ] Remember me functionality;
   - [ ] CSRF protection;
 - [X] Add USER and ADMIN roles;
+  - GUEST USER
 - [ ] Protect endpoints based on role;
 - [X] Implement login/register page;
 - [X] Functional logout;
@@ -46,3 +47,7 @@
 - [ ] BUG When a request is made, if the token is expired, the user should be redirected to the login page;
 - [ ] If user switches filter for type to rental, the price query should be made for monthly_rent instead of asking_price 
 - [ ] Move database to docker container; !!!!
+- [ ] BUG Listings are not show when user first logs in;
+- [ ] Bug On login page the layout should exclude all buttons;
+- [X] Message notification only shows after refreshing the page;
+- [ ] Message notification should be removed instantly when message is read, not after a refresh;

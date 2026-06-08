@@ -21,6 +21,7 @@ const props = defineProps({
 const emit = defineEmits(['delete']);
 
 const router = useRouter();
+
 const goToDetail = () => router.push(`/listings/${props.listing.id}`);
 
 const property = props.listing.property;
@@ -53,8 +54,9 @@ const formattedPrice = computed(() => {
           <h3 class="price">{{ formattedPrice }}</h3>
           <h4 class="title">{{ property.address }}</h4>
         </div>
-        <div>
+        <div class="type-status">
           <h3 class="type">{{ capitalize(property.propertyType) }}</h3>
+          <span v-if="listing.status" class="status-badge" :class="listing.status">{{ listing.status }}</span>
         </div>
       </div>
 
@@ -209,6 +211,36 @@ const formattedPrice = computed(() => {
 .delete-btn:hover {
   background-color: #c62828;
   color: white;
+}
+
+.type-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.status-badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge.active {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.inactive {
+  background: #f5f5f5;
+  color: #757575;
+}
+
+.status-badge.sold {
+  background: #fce4ec;
+  color: #c62828;
 }
 
 @media (max-width: 768px) {

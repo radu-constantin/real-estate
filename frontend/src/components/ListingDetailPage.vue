@@ -1,15 +1,21 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
+import { useAuthStore } from '@/stores/auth';
 import ListingDetailHeader from './ListingDetailHeader.vue';
 import ListingDetailSpecs from './ListingDetailSpecs.vue';
 import ContactOwnerForm from './ContactOwnerForm.vue';
 
 const route = useRoute();
+const authStore = useAuthStore();
 const listing = ref(null);
 const loading = ref(true);
 const error = ref('');
+
+const isOwner = computed(() =>
+  listing.value && authStore.user?.id === listing.value.property?.user?.id
+);
 
 onMounted(async () => {
   try {
@@ -30,7 +36,7 @@ onMounted(async () => {
     <ListingDetailHeader :listing="listing" />
     <div class="detail-body">
       <ListingDetailSpecs :listing="listing" />
-      <ContactOwnerForm :listing-id="listing.id" />
+      <ContactOwnerForm v-if="!isOwner" :listing-id="listing.id" />
     </div>
   </div>
 </template>

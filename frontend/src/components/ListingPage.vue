@@ -20,7 +20,6 @@ onMounted(async () => {
 
 const handleFilterChange = (newFilters) => {
   activeFilters.value = newFilters;
-  console.log(activeFilters.value)
 };
 
 const filteredListings = computed(() => {

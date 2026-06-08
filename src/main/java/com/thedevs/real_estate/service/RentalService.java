@@ -46,10 +46,10 @@ public class RentalService {
 
     public Rental updateRental(Long id, UpdateRentalRequest request) {
         return rentalRepository.findById(id).map(rental -> {
-            rental.setMonthlyRent(request.getMonthlyRent());
-            rental.setAvailableFrom(request.getAvailableFrom());
-            rental.setDescription(request.getDescription());
-            rental.setStatus(request.getStatus());
+            if (request.getMonthlyRent() != null) rental.setMonthlyRent(request.getMonthlyRent());
+            if (request.getAvailableFrom() != null) rental.setAvailableFrom(request.getAvailableFrom());
+            if (request.getDescription() != null) rental.setDescription(request.getDescription());
+            if (request.getStatus() != null) rental.setStatus(request.getStatus());
             rental.setUpdatedAt(LocalDate.now());
             return rentalRepository.save(rental);
         }).orElseThrow(() -> new RuntimeException("Rental not found"));

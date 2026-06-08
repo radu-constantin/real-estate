@@ -45,9 +45,9 @@ public class SaleService {
 
    public Sale updateSale(Long id, UpdateSaleRequest request) {
        return saleRepository.findById(id).map(sale -> {
-           sale.setAskingPrice(request.getAskingPrice());
-           sale.setDescription(request.getDescription());
-           sale.setStatus(request.getStatus());
+           if (request.getAskingPrice() != null) sale.setAskingPrice(request.getAskingPrice());
+           if (request.getDescription() != null) sale.setDescription(request.getDescription());
+           if (request.getStatus() != null) sale.setStatus(request.getStatus());
            sale.setUpdatedAt(LocalDate.now());
            return saleRepository.save(sale);
        }).orElseThrow(() -> new RuntimeException("Sale not found"));

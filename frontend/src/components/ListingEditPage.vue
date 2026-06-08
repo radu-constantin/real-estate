@@ -29,6 +29,7 @@ const removeExistingPhoto = async (photoId) => {
 
 const form = ref({
   description: '',
+  status: 'active',
   askingPrice: '',
   monthlyRent: '',
   availableFrom: '',
@@ -65,6 +66,7 @@ onMounted(async () => {
     propertyType.value = property.propertyType
 
     form.value.description = listing.description || ''
+    form.value.status = listing.status || 'active'
     form.value.property.address = property.address || ''
     form.value.property.numberOfRooms = property.numberOfRooms ?? ''
     form.value.property.floorArea = property.floorArea ?? ''
@@ -118,14 +120,14 @@ const handleSubmit = async () => {
       await axios.put(`/api/sales/${listingId.value}`, {
         askingPrice: Number(form.value.askingPrice),
         description: form.value.description,
-        status: 'active',
+        status: form.value.status,
       })
     } else {
       await axios.put(`/api/rentals/${listingId.value}`, {
         monthlyRent: Number(form.value.monthlyRent),
         availableFrom: form.value.availableFrom,
         description: form.value.description,
-        status: 'active',
+        status: form.value.status,
       })
     }
 
@@ -217,6 +219,15 @@ const handleSubmit = async () => {
           <div class="form-group full-width">
             <label>Descriere</label>
             <textarea v-model="form.description" rows="4" placeholder="Descrie proprietatea..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Status anunț</label>
+            <select v-model="form.status" class="status-select">
+              <option value="active">Activ</option>
+              <option value="inactive">Inactiv</option>
+              <option value="sold">Vândut / Închiriat</option>
+            </select>
           </div>
 
           <template v-if="listingType === 'sale'">
@@ -349,7 +360,8 @@ const handleSubmit = async () => {
 }
 
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group .status-select {
   padding: 0.6rem 0.75rem;
   border: 1px solid var(--color-border);
   border-radius: 4px;
@@ -360,7 +372,8 @@ const handleSubmit = async () => {
 }
 
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group .status-select:focus {
   outline: none;
   border-color: var(--color-primary);
 }

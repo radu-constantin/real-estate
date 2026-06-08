@@ -1,23 +1,21 @@
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
+import api from '@/api/axios';
 
 const props = defineProps({
   listingId: { type: Number, required: true }
 });
 
-const form = ref({ name: '', email: '', message: '' });
+const message = ref('');
 const submitted = ref(false);
 const error = ref('');
 
 const handleSubmit = async () => {
   error.value = '';
   try {
-    await axios.post('/api/messages', {
+    await api.post('/api/inquiries', {
       listingId: props.listingId,
-      senderName: form.value.name,
-      senderEmail: form.value.email,
-      message: form.value.message,
+      message: message.value,
     });
     submitted.value = true;
   } catch {
@@ -34,16 +32,8 @@ const handleSubmit = async () => {
     </div>
     <form v-else @submit.prevent="handleSubmit" class="contact-form">
       <div class="form-group">
-        <label>Nume</label>
-        <input v-model="form.name" type="text" required placeholder="Numele tău" />
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input v-model="form.email" type="email" required placeholder="email@exemplu.com" />
-      </div>
-      <div class="form-group">
         <label>Mesaj</label>
-        <textarea v-model="form.message" required rows="4" placeholder="Scrie mesajul tău..."></textarea>
+        <textarea v-model="message" required rows="4" placeholder="Scrie mesajul tău..."></textarea>
       </div>
       <p v-if="error" class="error-message">{{ error }}</p>
       <button type="submit" class="submit-btn">Trimite mesaj</button>
@@ -85,7 +75,6 @@ const handleSubmit = async () => {
   font-weight: 500;
 }
 
-.form-group input,
 .form-group textarea {
   padding: 0.6rem 0.75rem;
   border: 1px solid var(--color-border);
@@ -94,16 +83,12 @@ const handleSubmit = async () => {
   color: var(--color-text-main);
   background: white;
   transition: border-color 0.2s;
+  resize: vertical;
 }
 
-.form-group input:focus,
 .form-group textarea:focus {
   outline: none;
   border-color: var(--color-primary);
-}
-
-.form-group textarea {
-  resize: vertical;
 }
 
 .submit-btn {
