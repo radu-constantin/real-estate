@@ -8,11 +8,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping("/api/listings")
 public class ListingController {
 
     private final ListingService listingService;
+
+    private static final Logger log = LoggerFactory.getLogger(ListingController.class);
 
     public ListingController(ListingService listingService) {
         this.listingService = listingService;
@@ -35,6 +40,7 @@ public class ListingController {
     @PostMapping
     public ResponseEntity<Listing> create(@RequestBody Listing listing) {
         Listing createdListing = listingService.createListing(listing);
+        log.info("Listing created: id={}", createdListing.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdListing);
     }
 

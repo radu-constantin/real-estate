@@ -21,7 +21,7 @@
 - [X] Implement messaging system;
 - [X] Implement user profile;
 - [ ] Implement user favorites; (mai spre final)
-- [ ] Implement error pages;
+- [X] Implement error pages;
 - [ ] Implement logs;
 - [X] Implement filters;
 - [X] Implement search; ??
