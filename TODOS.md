@@ -7,7 +7,7 @@
 - [X] Add some sort of validation; ex: max number of rooms;
 - [ ] Finish adding validation for all resources;
 - [ ] Implement tests for validation rules;
-- [ ] Properly setup axios in main.js
+- [X] Properly setup axios in main.js
 
 - [X] Finish individual listing page;
 - [X] Allow user to create new listing;
@@ -22,10 +22,10 @@
 - [X] Implement user profile;
 - [ ] Implement user favorites; (mai spre final)
 - [X] Implement error pages;
-- [ ] Implement logs;
+- [X] Implement logs;
 - [X] Implement filters;
 - [X] Implement search; ??
-- [ ] Implement pagination; ??
+- [ ] Implement pagination; ?
 - [X] Implement file upload;
   - [X] Find a better placeholder for images;
 
@@ -39,7 +39,7 @@
 - [X] Implement login/register page;
 - [X] Functional logout;
 
-- [ ] Im forms replace the placeholder user id with the actual user id; !!!!
+- [X] Im forms replace the placeholder user id with the actual user id; !!!!
 - [ ] Right now 2 requests are made for creating a listing (1 for property and 1 for listing);
 - [ ] Split address property into country, city and address;
 - [ ] Move SECRET_KEY from JwtService to deployment service; !!!!
@@ -51,3 +51,4 @@
 - [ ] Bug On login page the layout should exclude all buttons;
 - [X] Message notification only shows after refreshing the page;
 - [ ] Message notification should be removed instantly when message is read, not after a refresh;
+- [ ] Change listing property types to romanian;
