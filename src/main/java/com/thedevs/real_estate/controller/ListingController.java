@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
 
@@ -36,10 +35,12 @@ public class ListingController {
             @RequestParam(required = false) String listingType,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy) {
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return ResponseEntity.ok(listingService.getAllListings(userId, address, maxPrice, minRooms, listingType, pageable));
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(listingService.getAllListings(
+                userId, address, maxPrice, minRooms, listingType, sortBy, sortDir, pageable));
     }
 
     @GetMapping("/{id}")

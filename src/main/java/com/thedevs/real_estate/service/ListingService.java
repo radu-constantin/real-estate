@@ -29,7 +29,8 @@ public class ListingService {
     }
 
     public Page<Listing> getAllListings(Long userId, String address, BigDecimal maxPrice,
-                                        Integer minRooms, String listingType, Pageable pageable) {
+                                        Integer minRooms, String listingType,
+                                        String sortBy, String sortDir, Pageable pageable) {
         return listingRepository.findAll((Specification<Listing>) (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -58,6 +59,25 @@ public class ListingService {
             if (minRooms != null && minRooms > 0) {
                 predicates.add(cb.greaterThanOrEqualTo(
                         root.get("property").get("numberOfRooms"), minRooms));
+            }
+
+            if (!query.getResultType().equals(Long.class)) {
+                boolean asc = "asc".equalsIgnoreCase(sortDir);
+                if ("price".equalsIgnoreCase(sortBy) && listingType != null) {
+                    if ("sale".equalsIgnoreCase(listingType)) {
+                        Root<Sale> saleRoot = cb.treat(root, Sale.class);
+                        query.orderBy(asc ? cb.asc(saleRoot.get("askingPrice")) : cb.desc(saleRoot.get("askingPrice")));
+                    } else if ("rental".equalsIgnoreCase(listingType)) {
+                        Root<Rental> rentalRoot = cb.treat(root, Rental.class);
+                        query.orderBy(asc ? cb.asc(rentalRoot.get("monthlyRent")) : cb.desc(rentalRoot.get("monthlyRent")));
+                    }
+                } else if ("numberOfRooms".equalsIgnoreCase(sortBy)) {
+                    query.orderBy(asc
+                            ? cb.asc(root.get("property").get("numberOfRooms"))
+                            : cb.desc(root.get("property").get("numberOfRooms")));
+                } else {
+                    query.orderBy(asc ? cb.asc(root.get("id")) : cb.desc(root.get("id")));
+                }
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));
