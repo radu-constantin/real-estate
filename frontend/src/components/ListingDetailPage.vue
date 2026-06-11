@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import axios from 'axios';
+import api from "@/api/axios.js";
 import { useAuthStore } from '@/stores/auth';
 import ListingDetailHeader from './ListingDetailHeader.vue';
 import ListingDetailSpecs from './ListingDetailSpecs.vue';
@@ -19,7 +19,7 @@ const isOwner = computed(() =>
 
 onMounted(async () => {
   try {
-    const response = await axios.get(`/api/listings/${route.params.id}`);
+    const response = await api.get(`/listings/${route.params.id}`);
     listing.value = response.data;
   } catch {
     error.value = 'Nu am putut încărca detaliile anunțului.';

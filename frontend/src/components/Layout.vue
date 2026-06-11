@@ -13,7 +13,7 @@ let pollInterval = null;
 const fetchUnreadCount = async () => {
   if (!authStore.isAuthenticated) return;
   try {
-    const res = await api.get('/api/inquiries/unread-count');
+    const res = await api.get('/inquiries/unread-count');
     unreadCount.value = res.data.count;
   } catch {
     // silent fail — badge just won't update

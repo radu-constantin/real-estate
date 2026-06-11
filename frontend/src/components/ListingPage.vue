@@ -2,12 +2,12 @@
 import {ref, computed, onMounted} from 'vue';
 import ListingFilters from './ListingFilters.vue';
 import ListingList from './ListingList.vue';
-import axios from "axios";
+import api from "@/api/axios.js";
 
 const listings = ref([])
 
 onMounted(async () => {
-  const response = await axios.get('/api/listings')
+  const response = await api.get('/listings')
   listings.value = response.data
 })
 

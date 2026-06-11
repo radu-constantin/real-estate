@@ -8,7 +8,7 @@ const loading = ref(true);
 
 onMounted(async () => {
   try {
-    const res = await api.get('/api/inquiries/received');
+    const res = await api.get('/inquiries/received');
     inquiries.value = res.data;
   } finally {
     loading.value = false;
@@ -17,7 +17,7 @@ onMounted(async () => {
 
 const markAsRead = async (inquiry) => {
   try {
-    await api.put(`/api/inquiries/${inquiry.id}/read`);
+    await api.put(`/inquiries/${inquiry.id}/read`);
     inquiry.read = true;
   } catch {
   }

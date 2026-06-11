@@ -13,7 +13,7 @@ const error = ref('');
 const handleSubmit = async () => {
   error.value = '';
   try {
-    await api.post('/api/inquiries', {
+    await api.post('/inquiries', {
       listingId: props.listingId,
       message: message.value,
     });

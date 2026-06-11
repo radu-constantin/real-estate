@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import axios from 'axios'
 import api from '@/api/axios.js'
 
 const route = useRoute()
@@ -23,7 +22,7 @@ const onNewFilesSelected = (e) => { newFiles.value = [...e.target.files] }
 const removeNewFile = (i) => { newFiles.value = newFiles.value.filter((_, idx) => idx !== i) }
 
 const removeExistingPhoto = async (photoId) => {
-  await api.delete(`/api/properties/${propertyId.value}/photos/${photoId}`)
+  await api.delete(`/properties/${propertyId.value}/photos/${photoId}`)
   existingPhotos.value = existingPhotos.value.filter(p => p.id !== photoId)
 }
 
@@ -56,7 +55,7 @@ const toDateString = (val) => {
 
 onMounted(async () => {
   try {
-    const response = await axios.get(`/api/listings/${route.params.id}`)
+    const response = await api.get(`/listings/${route.params.id}`)
     const listing = response.data
     const property = listing.property
 
@@ -114,16 +113,16 @@ const handleSubmit = async () => {
       propertyPayload.floorNumber = Number(form.value.property.floorNumber)
     }
 
-    await axios.put(`/api/properties/${propertyId.value}`, propertyPayload)
+    await api.put(`/properties/${propertyId.value}`, propertyPayload)
 
     if (listingType.value === 'sale') {
-      await axios.put(`/api/sales/${listingId.value}`, {
+      await api.put(`/sales/${listingId.value}`, {
         askingPrice: Number(form.value.askingPrice),
         description: form.value.description,
         status: form.value.status,
       })
     } else {
-      await axios.put(`/api/rentals/${listingId.value}`, {
+      await api.put(`/rentals/${listingId.value}`, {
         monthlyRent: Number(form.value.monthlyRent),
         availableFrom: form.value.availableFrom,
         description: form.value.description,
@@ -134,7 +133,7 @@ const handleSubmit = async () => {
     for (const file of newFiles.value) {
       const fd = new FormData()
       fd.append('file', file)
-      const { data } = await api.post(`/api/properties/${propertyId.value}/photos`, fd)
+      const { data } = await api.post(`/properties/${propertyId.value}/photos`, fd)
       existingPhotos.value.push(data)
     }
     newFiles.value = []

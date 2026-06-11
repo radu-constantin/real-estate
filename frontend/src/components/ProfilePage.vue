@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
+import api from '@/api/axios.js'
 import { useAuthStore } from '../stores/auth'
 import ListingItem from './ListingItem.vue'
 
@@ -19,7 +19,7 @@ const initials = computed(() => {
 
 onMounted(async () => {
   try {
-    const response = await axios.get(`/api/listings?userId=${user.id}`)
+    const response = await api.get(`/listings?userId=${user.id}`)
     listings.value = response.data
   } finally {
     loading.value = false
@@ -43,7 +43,7 @@ const cancelDelete = () => {
 
 const confirmDelete = async () => {
   try {
-    await axios.delete(`/api/listings/${listingToDelete.value}`)
+    await api.delete(`/listings/${listingToDelete.value}`)
     listings.value = listings.value.filter(l => l.id !== listingToDelete.value)
   } finally {
     deleteModalVisible.value = false

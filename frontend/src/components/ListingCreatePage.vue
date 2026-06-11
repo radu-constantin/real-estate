@@ -56,17 +56,17 @@ const handleSubmit = async () => {
       propertyPayload.floorNumber = Number(form.value.property.floorNum);
     }
 
-    const propertyResponse = await api.post('/api/properties', propertyPayload);
+    const propertyResponse = await api.post('/properties', propertyPayload);
     const propertyId = propertyResponse.data.id;
 
     if (form.value.listingType === 'sale') {
-      await api.post('/api/sales', {
+      await api.post('/sales', {
         propertyId,
         askingPrice: Number(form.value.askingPrice),
         description: form.value.description,
       });
     } else {
-      await api.post('/api/rentals', {
+      await api.post('/rentals', {
         propertyId,
         monthlyRent: Number(form.value.monthlyRent),
         availableFrom: form.value.availableFrom,
@@ -77,7 +77,7 @@ const handleSubmit = async () => {
     for (const file of selectedFiles.value) {
       const fd = new FormData();
       fd.append('file', file);
-      await api.post(`/api/properties/${propertyId}/photos`, fd);
+      await api.post(`/properties/${propertyId}/photos`, fd);
     }
 
     await router.push('/');
