@@ -50,7 +50,7 @@ watch([searchQuery, maxPrice, minRooms, type], () => {
     <div class="filter-group">
       <label for="rooms">Număr camere</label>
       <select id="rooms" v-model.number="minRooms">
-        <option :value="0">Any</option>
+        <option :value="0">Oricâte</option>
         <option v-for="n in 5" :key="n" :value="n">{{ n }} +</option>
       </select>
     </div>

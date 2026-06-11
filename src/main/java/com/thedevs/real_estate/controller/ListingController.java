@@ -6,10 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/listings")
@@ -24,14 +28,22 @@ public class ListingController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Listing>> getAll(@RequestParam(required = false) Long userId,
-                                                @RequestParam(required = false) String address) {
+    public ResponseEntity<Page<Listing>> getAll(
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) Integer minRooms,
+            @RequestParam(required = false) String listingType,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy) {
 
-        return ResponseEntity.ok(listingService.getAllListings(userId, address));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return ResponseEntity.ok(listingService.getAllListings(userId, address, maxPrice, minRooms, listingType, pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Listing> getById(@PathVariable Long id) {
+    public ResponseEntity<Listing> getById(@PathVariable Integer id) {
         return listingService.getListingById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -45,12 +57,12 @@ public class ListingController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Listing> update(@PathVariable Long id, @RequestBody Listing listing) {
+    public ResponseEntity<Listing> update(@PathVariable Integer id, @RequestBody Listing listing) {
         return ResponseEntity.ok(listingService.updateListing(id, listing));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         try {
             listingService.deleteListing(id);
             return ResponseEntity.noContent().build();
