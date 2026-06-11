@@ -38,7 +38,7 @@ onUnmounted(() => clearInterval(pollInterval));
         <RouterLink to="/">
           <h1>IMOBILIARE</h1>
         </RouterLink>
-        <ul>
+        <ul v-if="authStore.isAuthenticated">
           <li>
             <RouterLink to="/listings/create">
               <Button label="Adaugă anunț">
