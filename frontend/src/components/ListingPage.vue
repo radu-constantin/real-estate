@@ -3,7 +3,9 @@ import { ref, computed, onMounted } from 'vue';
 import ListingFilters from './ListingFilters.vue';
 import ListingList from './ListingList.vue';
 import api from "@/api/axios.js";
+import ListingSort from './ListingSort.vue'
 
+const activeSort = ref({ sortBy: 'id', sortDir: 'asc' })
 const listings = ref([])
 const currentPage = ref(0)
 const totalPages = ref(0)
@@ -23,6 +25,8 @@ const fetchListings = async () => {
     size: PAGE_SIZE,
     listingType: activeFilters.value.type,
     maxPrice: activeFilters.value.price,
+    sortBy: activeSort.value.sortBy,
+    sortDir: activeSort.value.sortDir,
   }
   if (activeFilters.value.search) params.address = activeFilters.value.search
   if (activeFilters.value.rooms > 0) params.minRooms = activeFilters.value.rooms
@@ -31,6 +35,12 @@ const fetchListings = async () => {
   listings.value = response.data.content
   totalPages.value = response.data.totalPages
   totalElements.value = response.data.totalElements
+}
+
+const handleSortChange = (newSort) => {
+  activeSort.value = newSort
+  currentPage.value = 0
+  fetchListings()
 }
 
 const handleFilterChange = (newFilters) => {
@@ -74,6 +84,7 @@ onMounted(fetchListings)
   </div>
 
   <ListingFilters @filter-change="handleFilterChange"/>
+  <ListingSort @sort-change="handleSortChange"/>
   <ListingList :listings="listings"/>
 
   <div class="pagination" v-if="totalPages > 1">
