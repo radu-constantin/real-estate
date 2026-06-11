@@ -20,7 +20,7 @@ const initials = computed(() => {
 onMounted(async () => {
   try {
     const response = await api.get(`/listings?userId=${user.id}`)
-    listings.value = response.data
+    listings.value = response.data.content
   } finally {
     loading.value = false
   }
