@@ -36,6 +36,11 @@ real-estate/
 
 ### Data Model
 
+## Database Diagram
+
+<img width="1490" height="1218" alt="real-estate" src="https://github.com/user-attachments/assets/9519e52c-bb2e-4cc5-b1c5-fe2fadce5417" />
+
+
 | Entity | Key Fields |
 |---|---|
 | `User` | username, email, password (BCrypt), role (USER/ADMIN) |
