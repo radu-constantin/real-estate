@@ -10,7 +10,7 @@ const listings = ref([])
 const currentPage = ref(0)
 const totalPages = ref(0)
 const totalElements = ref(0)
-const PAGE_SIZE = 10
+const PAGE_SIZE = 2
 
 const activeFilters = ref({
   search: '',
